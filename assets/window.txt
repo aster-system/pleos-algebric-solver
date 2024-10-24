@@ -1,0 +1,4 @@
+// Load the needed pages
+<page_2d name="algebric_solver" displayed>
+	<content src="plugins/assets_algebric_solver/gui_content.txt" sub_paged>
+</page_2d>
