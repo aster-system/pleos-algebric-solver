@@ -35,6 +35,42 @@
 		<cursor type=pointing_hand_cursor>
 	</when>
 </gui_object>
+<gui_object name="algebric_solver_navigation_function_button" type="text">
+	<content font_size=40>Fonctions</content>
+	<height value=40 type=pixel>
+	<parent name="algebric_solver_navigation">
+	<texture alignment=fit>
+	<width value=1 type=scale>
+	<y attach=bottom attached_object="algebric_solver_navigation_complex_number_button">
+
+	<when event="overflighted">
+		<cursor type=pointing_hand_cursor>
+	</when>
+</gui_object>
+<gui_object name="algebric_solver_navigation_number_theory_button" type="text">
+	<content font_size=40>Théorie des nombres</content>
+	<height value=40 type=pixel>
+	<parent name="algebric_solver_navigation">
+	<texture alignment=fit>
+	<width value=1 type=scale>
+	<y attach=bottom attached_object="algebric_solver_navigation_function_button">
+
+	<when event="overflighted">
+		<cursor type=pointing_hand_cursor>
+	</when>
+</gui_object>
+<gui_object name="algebric_solver_navigation_sequences_button" type="text">
+	<content font_size=40>Suites</content>
+	<height value=40 type=pixel>
+	<parent name="algebric_solver_navigation">
+	<texture alignment=fit>
+	<width value=1 type=scale>
+	<y attach=bottom attached_object="algebric_solver_navigation_number_theory_button">
+
+	<when event="overflighted">
+		<cursor type=pointing_hand_cursor>
+	</when>
+</gui_object>
 
 //***************************************************
 //
@@ -127,6 +163,148 @@
 	<width value=1/4 type=scale>
 	<x value=1/2 type=object_scale>
 	<y attach=bottom attached_object="algebric_solver_complex_number_simplify_input" offset=5>
+
+	<when event="overflighted">
+		<cursor type=pointing_hand_cursor>
+	</when>
+</gui_object>
+
+//***************************************************
+//
+//   FUNCTIONS
+//
+//***************************************************
+
+<gui_object name="algebric_solver_function_body" type="scroller">
+	<border bottom=1 left=1 right=1 top=1>
+	<height value=1 type=scale>
+	<width value=4/5 type=scale>
+	<x attach=right>
+	<y value=0 type=scale>
+</gui_object>
+<gui_object name="algebric_solver_function_title" type="text">
+	<content font_size=80>Les fonctions</content>
+	<height value=80 type=pixel>
+	<parent name="algebric_solver_function_body">
+	<texture alignment=fit>
+	<width value=1 type=scale>
+	<x value=0 type=scale>
+	<y attach=top>
+</gui_object>
+
+//***************************************************
+//
+//   NUMBERS THEORY
+//
+//***************************************************
+
+<gui_object name="algebric_solver_number_theory_body" type="scroller">
+	<border bottom=1 left=1 right=1 top=1>
+	<height value=1 type=scale>
+	<width value=4/5 type=scale>
+	<x attach=right>
+	<y value=0 type=scale>
+</gui_object>
+<gui_object name="algebric_solver_number_theory_title" type="text">
+	<content font_size=80>La théorie des nombres</content>
+	<height value=80 type=pixel>
+	<parent name="algebric_solver_number_theory_body">
+	<texture alignment=fit>
+	<width value=1 type=scale>
+	<x value=0 type=scale>
+	<y attach=top>
+</gui_object>
+
+//***************************************************
+//
+//   SEQUENCES
+//
+//***************************************************
+
+<gui_object name="algebric_solver_sequences_body" type="scroller">
+	<border bottom=1 left=1 right=1 top=1>
+	<height value=1 type=scale>
+	<width value=4/5 type=scale>
+	<x attach=right>
+	<y value=0 type=scale>
+</gui_object>
+<gui_object name="algebric_solver_sequences_title" type="text">
+	<content font_size=80>Les suites</content>
+	<height value=80 type=pixel>
+	<parent name="algebric_solver_sequences_body">
+	<texture alignment=fit>
+	<width value=1 type=scale>
+	<x value=0 type=scale>
+	<y attach=top>
+</gui_object>
+<gui_object name="algebric_solver_sequences_redaction" type="text">
+	<border bottom=1 left=1 right=1 top=1>
+	<content font_size=24>Pas de rédaction à afficher.</content>
+	<height value=24 type=pixel>
+	<parent name="algebric_solver_sequences_body">
+	<texture alignment=fit>
+	<width value=4/5 type=scale>
+	<x value=1/2 type=object_scale>
+	<y attach=bottom attached_object="algebric_solver_sequences_title" offset=5>
+</gui_object>
+<gui_object name="algebric_solver_sequences_analyse_title" type="text">
+	<content font_size=30>Analyser une suite</content>
+	<height value=30 type=pixel>
+	<parent name="algebric_solver_sequences_body">
+	<texture alignment=fit>
+	<width value=2/3 type=scale>
+	<x value=1/2 type=object_scale>
+	<y attach=bottom attached_object="algebric_solver_sequences_redaction" offset=15>
+</gui_object>
+<gui_object name="algebric_solver_sequences_analyse_input_start" type="text">
+	<content font_size=30>s(n) = </content>
+	<height value=24 type=pixel>
+	<parent name="algebric_solver_sequences_body">
+	<texture alignment=fit>
+	<width value=1/8 type=scale>
+	<x value=1/8 type=object_scale>
+	<y attach=bottom attached_object="algebric_solver_sequences_analyse_title">
+</gui_object>
+<gui_object name="algebric_solver_sequences_analyse_input" type="text_input">
+	<border bottom=1 left=1 right=1 top=1>
+	<height value=24 type=pixel>
+	<parent name="algebric_solver_sequences_body">
+	<texture alignment=fit>
+	<width value=3/4 type=scale>
+	<x attach=right attached_object="algebric_solver_sequences_analyse_input_start">
+	<y attach=bottom attached_object="algebric_solver_sequences_analyse_title">
+</gui_object>
+<gui_object name="algebric_solver_sequences_analyse_recursions">
+	<height value0 type=pixel>
+	<parent name="algebric_solver_sequences_body">
+	<texture alignment=fit>
+	<width value=3/4 type=scale>
+	<x value=1/2 type=object_scale>
+	<y attach=bottom attached_object="algebric_solver_sequences_analyse_input" offset=5>
+</gui_object>
+<gui_object name="algebric_solver_sequences_analyse" type="text">
+	<border bottom=1 left=1 right=1 top=1>
+	<content font_size=30>Analyser</content>
+	<height value=30 type=pixel>
+	<parent name="algebric_solver_sequences_body">
+	<texture alignment=fit>
+	<width value=1/4 type=scale>
+	<x value=2/3 type=object_scale>
+	<y attach=bottom attached_object="algebric_solver_sequences_analyse_recursions" offset=5>
+
+	<when event="overflighted">
+		<cursor type=pointing_hand_cursor>
+	</when>
+</gui_object>
+<gui_object name="algebric_solver_sequences_analyse_add_recursion" type="text">
+	<border bottom=1 left=1 right=1 top=1>
+	<content font_size=30>Ajouter une récurrence</content>
+	<height value=30 type=pixel>
+	<parent name="algebric_solver_sequences_body">
+	<texture alignment=fit>
+	<width value=1/4 type=scale>
+	<x value=1/3 type=object_scale>
+	<y attach=bottom attached_object="algebric_solver_sequences_analyse_recursions" offset=5>
 
 	<when event="overflighted">
 		<cursor type=pointing_hand_cursor>

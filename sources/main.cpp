@@ -31,8 +31,7 @@
 #include "../headers/pleos_algebric_solver.h"
 
 // Init SCLS
-SCLS_FOUNDATION_INIT
-SCLS_MATH_INIT
+SCLS_INIT
 
 int main(int argc, char* argv[]) {
     pleos::__Temp_Pleos_Window window(900, 600, argv[0]);

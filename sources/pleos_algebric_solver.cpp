@@ -47,7 +47,13 @@ namespace pleos {
         // Check page by page
         to_return = __create_loaded_object_from_type_complex_number(object_name, object_type, parent);
         if(to_return.get() != 0) return to_return;
+        to_return = __create_loaded_object_from_type_function(object_name, object_type, parent);
+        if(to_return.get() != 0) return to_return;
         to_return = __create_loaded_object_from_type_home(object_name, object_type, parent);
+        if(to_return.get() != 0) return to_return;
+        to_return = __create_loaded_object_from_type_number_theory(object_name, object_type, parent);
+        if(to_return.get() != 0) return to_return;
+        to_return = __create_loaded_object_from_type_sequences(object_name, object_type, parent);
         if(to_return.get() != 0) return to_return;
 
         // Classic object creation
@@ -72,23 +78,108 @@ namespace pleos {
         }
         return std::shared_ptr<scls::GUI_Object>();
     }
+    std::shared_ptr<scls::GUI_Object> Algebric_Solver_Page::__create_loaded_object_from_type_function(std::string object_name, std::string object_type, scls::GUI_Object* parent) {
+        if(object_name == "algebric_solver_function_body") {
+            a_function_page = *parent->new_object<scls::GUI_Text>(object_name);
+            return a_function_page;
+        } return std::shared_ptr<scls::GUI_Object>();
+    }
     std::shared_ptr<scls::GUI_Object> Algebric_Solver_Page::__create_loaded_object_from_type_home(std::string object_name, std::string object_type, scls::GUI_Object* parent) {
         if(object_name == "algebric_solver_home_body") {
             a_home_page = *parent->new_object<scls::GUI_Object>(object_name);
             return a_home_page;
-        }
-        return std::shared_ptr<scls::GUI_Object>();
+        } return std::shared_ptr<scls::GUI_Object>();
     }
     std::shared_ptr<scls::GUI_Object> Algebric_Solver_Page::__create_loaded_object_from_type_navigation(std::string object_name, std::string object_type, scls::GUI_Object* parent) {
         if(object_name == "algebric_solver_navigation_complex_number_button") {
             a_complex_number_navigation_button = *parent->new_object<scls::GUI_Text>(object_name);
             return a_complex_number_navigation_button;
-        }
-        else if(object_name == "algebric_solver_navigation_home_button") {
+        } else if(object_name == "algebric_solver_navigation_home_button") {
             a_home_navigation_button = *parent->new_object<scls::GUI_Text>(object_name);
             return a_home_navigation_button;
-        }
-        return std::shared_ptr<scls::GUI_Object>();
+        } else if(object_name == "algebric_solver_navigation_function_button") {
+            a_function_navigation_button = *parent->new_object<scls::GUI_Text>(object_name);
+            return a_function_navigation_button;
+        } else if(object_name == "algebric_solver_navigation_number_theory_button") {
+            a_number_theory_button = *parent->new_object<scls::GUI_Text>(object_name);
+            return a_number_theory_button;
+        } else if(object_name == "algebric_solver_navigation_sequences_button") {
+            a_sequences_button = *parent->new_object<scls::GUI_Text>(object_name);
+            return a_sequences_button;
+        } return std::shared_ptr<scls::GUI_Object>();
+    }
+    std::shared_ptr<scls::GUI_Object> Algebric_Solver_Page::__create_loaded_object_from_type_number_theory(std::string object_name, std::string object_type, scls::GUI_Object* parent) {
+        if(object_name == "algebric_solver_number_theory_body") {
+            a_number_theory_page = *parent->new_object<scls::GUI_Object>(object_name);
+            return a_number_theory_page;
+        } return std::shared_ptr<scls::GUI_Object>();
+    }
+    std::shared_ptr<scls::GUI_Object> Algebric_Solver_Page::__create_loaded_object_from_type_sequences(std::string object_name, std::string object_type, scls::GUI_Object* parent) {
+        if(object_name == "algebric_solver_sequences_body") {
+            a_sequences_page = *parent->new_object<scls::GUI_Object>(object_name);
+            return a_sequences_page;
+        } else if(object_name == "algebric_solver_sequences_analyse") {
+            a_sequences_analyse_button = *parent->new_object<scls::GUI_Text>(object_name);
+            return a_sequences_analyse_button;
+        } else if(object_name == "algebric_solver_sequences_analyse_add_recursion") {
+            a_sequences_analyse_add_recursion_button = *parent->new_object<scls::GUI_Text>(object_name);
+            return a_sequences_analyse_add_recursion_button;
+        } else if(object_name == "algebric_solver_sequences_analyse_input") {
+            a_sequences_analyse_input = *parent->new_object<scls::GUI_Text_Input>(object_name);
+            return a_sequences_analyse_input;
+        } else if(object_name == "algebric_solver_sequences_analyse_input_start") {
+            a_sequences_analyse_input_start = *parent->new_object<scls::GUI_Text>(object_name);
+            return a_sequences_analyse_input_start;
+        } else if(object_name == "algebric_solver_sequences_analyse_recursions") {
+            a_sequences_analyse_recursions = *parent->new_object<scls::GUI_Object>(object_name);
+            return a_sequences_analyse_recursions;
+        } else if(object_name == "algebric_solver_sequences_redaction") {
+            a_sequences_redaction = *parent->new_object<scls::GUI_Text>(object_name);
+            return a_sequences_redaction;
+        } return std::shared_ptr<scls::GUI_Object>();
+    }
+
+    //******************
+    //
+    // Sequences handling
+    //
+    //******************
+
+    // Adds a recursion to the sequence
+    void Algebric_Solver_Page::sequences_add_recursion() {
+        // Create the title
+        std::shared_ptr<scls::GUI_Text> title = *a_sequences_analyse_recursions.get()->new_object<scls::GUI_Text>(a_sequences_analyse_recursions.get()->name() + "-title_" + std::to_string(a_sequences_analyse_recursions_titles.size()));
+        title.get()->set_font_size(30);
+        title.get()->set_height_in_pixel(30);
+        title.get()->set_width_in_scale(scls::Fraction(1, 4));
+        title.get()->set_x_in_object_scale(scls::Fraction(1, 3));
+        if(a_sequences_analyse_recursions_titles.size() <= 0) title.get()->attach_top_in_parent();
+        else title.get()->attach_bottom_of_object_in_parent(a_sequences_analyse_recursions_titles[a_sequences_analyse_recursions_titles.size() - 1]);
+        title.get()->set_text("s(0) = ");
+        // Create the value
+        std::shared_ptr<scls::GUI_Text_Input> value = *a_sequences_analyse_recursions.get()->new_object<scls::GUI_Text_Input>(a_sequences_analyse_recursions.get()->name() + "-input_" + std::to_string(a_sequences_analyse_recursions_titles.size()));
+        value.get()->set_border_width_in_pixel(1);
+        value.get()->set_font_size(30);
+        value.get()->set_height_in_pixel(30);
+        value.get()->set_width_in_scale(scls::Fraction(1, 4));
+        value.get()->set_x_in_object_scale(scls::Fraction(2, 3));
+        if(a_sequences_analyse_recursions_titles.size() <= 0) value.get()->attach_top_in_parent();
+        else value.get()->attach_bottom_of_object_in_parent(a_sequences_analyse_recursions_titles[a_sequences_analyse_recursions_titles.size() - 1]);
+        // Add the elements
+        a_sequences_analyse_recursions_titles.push_back(title);
+        a_sequences_analyse_recursions_values.push_back(value);
+
+        // Modify the sequence title
+        update_sequences_title();
+
+        a_sequences_analyse_recursions.get()->set_height_in_pixel(a_sequences_analyse_recursions.get()->height_in_pixel() + 30);
+    }
+
+    // Convert a string to a polymonial with sequences datas
+    scls::Formula Algebric_Solver_Page::sequences_string_to_polymonial() {
+        scls::String_To_Formula_Parse parser;
+        parser.add_function("s");
+        return parser.string_to_formula(sequences_analyse_input());
     }
 
     //******************
@@ -101,16 +192,48 @@ namespace pleos {
     void Algebric_Solver_Page::check_complex_number_events() {
         // Check if a simplification is needed
         if(a_complex_number_simplify_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) {
-            // (32zi * 8x + 7)(45z * 7 + 9xi)
             scls::Polymonial polymonial = scls::string_to_polymonial(complex_number_simplify_input());
-            std::cout << complex_number_simplify_input() << " = " << polymonial << std::endl;
+            a_complex_number_simplify_result.get()->set_text(polymonial.to_std_string());
         }
     }
+
+    // Check the functions event
+    void Algebric_Solver_Page::check_function_events() {}
 
     // Check the navigation event
     void Algebric_Solver_Page::check_navigation_events() {
         if(a_complex_number_navigation_button.get() != 0 && a_complex_number_navigation_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) display_complex_number_page();
+        if(a_function_navigation_button.get() != 0 && a_function_navigation_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) display_function_page();
         if(a_home_navigation_button.get() != 0 && a_home_navigation_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) display_home_page();
+        if(a_number_theory_button.get() != 0 && a_number_theory_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) display_number_theory_page();
+        if(a_sequences_button.get() != 0 && a_sequences_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) display_sequences_page();
+    }
+
+    // Check the sequences event
+    void Algebric_Solver_Page::check_sequences_events() {
+        if(a_sequences_analyse_add_recursion_button.get() != 0 && a_sequences_analyse_add_recursion_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) {
+            // Add a recursion to the sequence
+            sequences_add_recursion();
+        }
+
+        if(a_sequences_analyse_button.get() != 0 && a_sequences_analyse_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) {
+            // Analyse the text
+            std::string sequence_input = sequences_analyse_input();
+            if(sequence_input != "") {
+                // Create the redaction
+                scls::Formula polymonial = sequences_string_to_polymonial();
+                scls::Formula polymonial_plus = scls::replace_unknown(polymonial, "n", "n + 1");
+                scls::Formula polymonial_difference = polymonial_plus - polymonial;
+                std::string sequence_input_simplify = polymonial.to_std_string();
+                std::string final_text = "Nous avons la suite s(n) = " + sequence_input + " pour tout n appartenant à N.</br>";
+                final_text += "Nous pouvons la simplifier sous la forme s(n) = " + sequence_input_simplify + ".</br></br>";
+                final_text += "La forme s(n+1) peut s'écrire " + polymonial_plus.to_std_string() + ".</br>";
+                final_text += "La forme s(n+1) - s(n) peut s'écrire " + polymonial_difference.to_std_string() + ".</br>";
+                final_text += "Donc, s(n+1) = s(n) + " + polymonial_difference.to_std_string() + ".";
+                a_sequences_redaction.get()->set_text(final_text);
+                a_sequences_redaction.get()->set_height_in_pixel(a_sequences_redaction.get()->texture()->get_image()->height());
+            }
+        }
     }
 
     // Update the events
@@ -120,8 +243,12 @@ namespace pleos {
         // Check the navigation event
         check_navigation_events();
 
-        // Complex number vents
+        // Complex number events
         if(current_page() == PLEOS_ALGEBRIC_SOLVER_COMPLEX_NUMBER_PAGE) check_complex_number_events();
+        // Function events
+        if(current_page() == PLEOS_ALGEBRIC_SOLVER_FUNCTION_PAGE) check_function_events();
+        // Sequences events
+        if(current_page() == PLEOS_ALGEBRIC_SOLVER_SEQUENCES_PAGE) check_sequences_events();
     }
 
     //******************
@@ -139,6 +266,15 @@ namespace pleos {
         set_current_page(PLEOS_ALGEBRIC_SOLVER_COMPLEX_NUMBER_PAGE);
     }
 
+    // DIsplays the function page
+    void Algebric_Solver_Page::display_function_page() {
+        hide_all();
+        if(a_function_page.get() != 0) a_function_page.get()->set_visible(true);
+
+        // Set the needed datas
+        set_current_page(PLEOS_ALGEBRIC_SOLVER_FUNCTION_PAGE);
+    }
+
     // Displays the home page
     void Algebric_Solver_Page::display_home_page() {
         hide_all();
@@ -148,9 +284,37 @@ namespace pleos {
         set_current_page(PLEOS_ALGEBRIC_SOLVER_HOME_PAGE);
     }
 
+    // Displays the number theory page
+    void Algebric_Solver_Page::display_number_theory_page() {
+        hide_all();
+        if(a_number_theory_page.get() != 0) a_number_theory_page.get()->set_visible(true);
+
+        // Set the needed datas
+        set_current_page(PLEOS_ALGEBRIC_SOLVER_NUMBER_THEORY_PAGE);
+    }
+
+    // Displays the sequences page
+    void Algebric_Solver_Page::display_sequences_page() {
+        hide_all();
+        if(a_sequences_page.get() != 0) a_sequences_page.get()->set_visible(true);
+
+        // Set the needed datas
+        set_current_page(PLEOS_ALGEBRIC_SOLVER_SEQUENCES_PAGE);
+        // Configure the UI elements
+        update_sequences_title();
+    }
+
     // Hides all the pages
     void Algebric_Solver_Page::hide_all() {
         if(a_complex_number_page.get() != 0) a_complex_number_page.get()->set_visible(false);
+        if(a_function_page.get() != 0) a_function_page.get()->set_visible(false);
         if(a_home_page.get() != 0) a_home_page.get()->set_visible(false);
+        if(a_number_theory_page.get() != 0) a_number_theory_page.get()->set_visible(false);
+        if(a_sequences_page.get() != 0) a_sequences_page.get()->set_visible(false);
+
+        // Clear the sequences part
+        unload_sequences();
+        a_sequences_analyse_recursions.get()->delete_children();
+        a_sequences_analyse_recursions.get()->set_height_in_pixel(0);
     }
 }

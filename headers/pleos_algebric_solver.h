@@ -36,6 +36,9 @@
 // Possibles pages
 #define PLEOS_ALGEBRIC_SOLVER_COMPLEX_NUMBER_PAGE 0
 #define PLEOS_ALGEBRIC_SOLVER_HOME_PAGE 1
+#define PLEOS_ALGEBRIC_SOLVER_NUMBER_THEORY_PAGE 2
+#define PLEOS_ALGEBRIC_SOLVER_FUNCTION_PAGE 3
+#define PLEOS_ALGEBRIC_SOLVER_SEQUENCES_PAGE 4
 
 // The namespace "pleos" is used to simplify the all.
 namespace pleos {
@@ -49,8 +52,11 @@ namespace pleos {
         // Loads an object in a page from XML
         virtual std::shared_ptr<scls::GUI_Object> __create_loaded_object_from_type(std::string object_name, std::string object_type, scls::GUI_Object* parent);
         std::shared_ptr<scls::GUI_Object> __create_loaded_object_from_type_complex_number(std::string object_name, std::string object_type, scls::GUI_Object* parent);
+        std::shared_ptr<scls::GUI_Object> __create_loaded_object_from_type_function(std::string object_name, std::string object_type, scls::GUI_Object* parent);
         std::shared_ptr<scls::GUI_Object> __create_loaded_object_from_type_home(std::string object_name, std::string object_type, scls::GUI_Object* parent);
         std::shared_ptr<scls::GUI_Object> __create_loaded_object_from_type_navigation(std::string object_name, std::string object_type, scls::GUI_Object* parent);
+        std::shared_ptr<scls::GUI_Object> __create_loaded_object_from_type_number_theory(std::string object_name, std::string object_type, scls::GUI_Object* parent);
+        std::shared_ptr<scls::GUI_Object> __create_loaded_object_from_type_sequences(std::string object_name, std::string object_type, scls::GUI_Object* parent);
 
         //******************
         //
@@ -63,14 +69,36 @@ namespace pleos {
 
         //******************
         //
+        // Sequences handling
+        //
+        //******************
+
+        // Adds a recursion to the sequence
+        void sequences_add_recursion();
+        // Convert a string to a polymonial with sequences datas
+        scls::Formula sequences_string_to_polymonial();
+        // Unload the recursions in the sequences
+        inline void unload_sequences(){a_sequences_analyse_recursions_indices.clear();a_sequences_analyse_recursions_titles.clear();a_sequences_analyse_recursions_values.clear();};
+
+        // Returns the current text to analyse
+        inline std::string sequences_analyse_input() const {if(a_sequences_analyse_input.get() == 0) return std::string(); return a_sequences_analyse_input.get()->text();};
+        // Update the title of the sequences
+        inline void update_sequences_title() {if(a_sequences_analyse_recursions_titles.size() <= 0) {a_sequences_analyse_input_start.get()->set_text("s(n) = ");} else {a_sequences_analyse_input_start.get()->set_text("s(n + " + std::to_string(a_sequences_analyse_recursions_titles.size()) + ") = ");}};
+
+        //******************
+        //
         // Check the events
         //
         //******************
 
         // Check the complex number event
         void check_complex_number_events();
+        // Check the functions event
+        void check_function_events();
         // Check the navigation event
         void check_navigation_events();
+        // Check the sequences event
+        void check_sequences_events();
         // Update the events
         void update_event();
 
@@ -82,8 +110,14 @@ namespace pleos {
 
         // Displays the complex number page
         void display_complex_number_page();
+        // Displays the function page
+        void display_function_page();
         // Displays the home page
         void display_home_page();
+        // Displays the number theory page
+        void display_number_theory_page();
+        // Displays the sequences page
+        void display_sequences_page();
         // Hides all the pages
         void hide_all();
 
@@ -107,17 +141,35 @@ namespace pleos {
 
         // Navigation button
         std::shared_ptr<scls::GUI_Text> a_complex_number_navigation_button;
+        std::shared_ptr<scls::GUI_Text> a_function_navigation_button;
         std::shared_ptr<scls::GUI_Text> a_home_navigation_button;
+        std::shared_ptr<scls::GUI_Text> a_number_theory_button;
+        std::shared_ptr<scls::GUI_Text> a_sequences_button;
 
         // Pages
         std::shared_ptr<scls::GUI_Object> a_complex_number_page;
+        std::shared_ptr<scls::GUI_Object> a_function_page;
         std::shared_ptr<scls::GUI_Object> a_home_page;
+        std::shared_ptr<scls::GUI_Object> a_number_theory_page;
+        std::shared_ptr<scls::GUI_Object> a_sequences_page;
 
         // Complex number page
         // Simplification part
         std::shared_ptr<scls::GUI_Text> a_complex_number_simplify_button;
         std::shared_ptr<scls::GUI_Text_Input> a_complex_number_simplify_input;
         std::shared_ptr<scls::GUI_Text> a_complex_number_simplify_result;
+
+        // Sequences page
+        std::shared_ptr<scls::GUI_Text> a_sequences_redaction;
+        // Analyse part
+        std::shared_ptr<scls::GUI_Text> a_sequences_analyse_add_recursion_button;
+        std::shared_ptr<scls::GUI_Text> a_sequences_analyse_button;
+        std::shared_ptr<scls::GUI_Text_Input> a_sequences_analyse_input;
+        std::shared_ptr<scls::GUI_Text> a_sequences_analyse_input_start;
+        std::shared_ptr<scls::GUI_Object> a_sequences_analyse_recursions;
+        std::vector<std::shared_ptr<scls::GUI_Text_Input>> a_sequences_analyse_recursions_indices;
+        std::vector<std::shared_ptr<scls::GUI_Text>> a_sequences_analyse_recursions_titles;
+        std::vector<std::shared_ptr<scls::GUI_Text_Input>> a_sequences_analyse_recursions_values;
     };
 
     class __Temp_Pleos_Window : public scls::Window {
