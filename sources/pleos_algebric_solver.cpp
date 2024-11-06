@@ -135,8 +135,46 @@ namespace pleos {
             return a_sequences_analyse_recursions;
         } else if(object_name == "algebric_solver_sequences_redaction") {
             a_sequences_redaction = *parent->new_object<scls::GUI_Text>(object_name);
+            a_sequences_redaction.get()->set_max_width(800);
             return a_sequences_redaction;
         } return std::shared_ptr<scls::GUI_Object>();
+    }
+
+    //******************
+    //
+    // Analyse handling
+    //
+    //******************
+
+    // Returns the interval of an increasing function
+    scls::Interval Algebric_Solver_Page::function_variation(scls::Formula current_function, std::string& redaction) {
+        scls::Formula function_plus = scls::replace_unknown(current_function, "n", "n + 1");
+        scls::Formula function_difference = function_plus - current_function;
+
+        // Create the redaction
+        redaction += "La forme s(n+1) peut s'écrire " + function_plus.to_std_string() + ". ";
+        redaction += "La forme s(n+1) - s(n) peut s'écrire " + function_difference.to_std_string() + ". ";
+        redaction += "Pour étudier les variations de s, nous devons donc étudier le signe de s(n+1) - s(n).</br>";
+
+        // Only one polymonial
+        if(function_difference.is_simple_polymonial()) {
+            scls::Polymonial polymonial = function_difference;
+            if(polymonial.is_known()) {
+                // Only one number
+                scls::Fraction number = static_cast<scls::Complex>(polymonial.known_monomonial()).real();
+                if(number < 0) {
+                    redaction += "Or, " + function_difference.to_std_string() + " < 0, la suite est donc décroissante sur N.";
+                } else if(number > 0) {
+                    redaction += "Or, " + function_difference.to_std_string() + " > 0, la suite est donc croissante sur N.";
+                } else {
+                    redaction += "Or, s(n+1) - s(n) = 0, la suite est donc constante sur N.";
+                }
+                // Add the type of sequence in the redaction
+                if(number != 0) redaction += "</br>De plus, nous pouvons constater que s est une suite arithmétique de raison " + number.to_std_string() + ".";
+            }
+        }
+
+        return scls::Interval(0, 0);
     }
 
     //******************
@@ -192,8 +230,8 @@ namespace pleos {
     void Algebric_Solver_Page::check_complex_number_events() {
         // Check if a simplification is needed
         if(a_complex_number_simplify_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) {
-            scls::Polymonial polymonial = scls::string_to_polymonial(complex_number_simplify_input());
-            a_complex_number_simplify_result.get()->set_text(polymonial.to_std_string());
+            scls::Formula formula = scls::string_to_formula(complex_number_simplify_input());
+            a_complex_number_simplify_result.get()->set_text(formula.to_std_string());
         }
     }
 
@@ -222,14 +260,12 @@ namespace pleos {
             if(sequence_input != "") {
                 // Create the redaction
                 scls::Formula polymonial = sequences_string_to_polymonial();
-                scls::Formula polymonial_plus = scls::replace_unknown(polymonial, "n", "n + 1");
-                scls::Formula polymonial_difference = polymonial_plus - polymonial;
                 std::string sequence_input_simplify = polymonial.to_std_string();
-                std::string final_text = "Nous avons la suite s(n) = " + sequence_input + " pour tout n appartenant à N.</br>";
+                std::string final_text = "Nous avons la suite s(n) = " + sequence_input + " pour tout n appartenant à N. ";
                 final_text += "Nous pouvons la simplifier sous la forme s(n) = " + sequence_input_simplify + ".</br></br>";
-                final_text += "La forme s(n+1) peut s'écrire " + polymonial_plus.to_std_string() + ".</br>";
-                final_text += "La forme s(n+1) - s(n) peut s'écrire " + polymonial_difference.to_std_string() + ".</br>";
-                final_text += "Donc, s(n+1) = s(n) + " + polymonial_difference.to_std_string() + ".";
+                // Study the variation of the function
+                function_variation(polymonial, final_text);
+                // Apply the redaction
                 a_sequences_redaction.get()->set_text(final_text);
                 a_sequences_redaction.get()->set_height_in_pixel(a_sequences_redaction.get()->texture()->get_image()->height());
             }

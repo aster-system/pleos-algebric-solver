@@ -60,6 +60,23 @@ namespace pleos {
 
         //******************
         //
+        // Analyse handling
+        //
+        //******************
+
+        // Datas about a studied function
+        struct Function_Studied {
+            // Formula of the function
+            scls::Formula function_formula;
+            // Name of the function
+            std::string function_name = "";
+        };
+
+        // Returns the interval of an increasing function
+        scls::Interval function_variation(scls::Formula current_function, std::string& redaction);
+
+        //******************
+        //
         // Complex number handling
         //
         //******************
