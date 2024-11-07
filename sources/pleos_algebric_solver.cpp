@@ -146,6 +146,52 @@ namespace pleos {
     //
     //******************
 
+    // Returns the interval of a positive function
+    scls::Interval Algebric_Solver_Page::function_sign(Function_Studied current_function, std::string& redaction) {
+        // Create the redaction
+        scls::Formula& function_studied = current_function.function_formula;
+        redaction += "La forme " + current_function.function_name + " peut s'écrire " + function_studied.to_std_string() + ". ";
+
+        // Only one polymonial
+        if(function_studied.is_simple_polymonial()) {
+            scls::Polymonial polymonial = function_studied;
+            std::cout << "R " << polymonial.degree("n") << std::endl;
+            if(polymonial.is_known()) {
+                // Only one number
+                scls::Fraction number = static_cast<scls::Complex>(polymonial.known_monomonial()).real();
+                if(number < 0) {
+                    redaction += "Or, " + function_studied.to_std_string() + " < 0, la suite est donc décroissante sur N.";
+                } else if(number > 0) {
+                    redaction += "Or, " + function_studied.to_std_string() + " > 0, la suite est donc croissante sur N.";
+                } else {
+                    redaction += "Or, s(n+1) - s(n) = 0, la suite est donc constante sur N.";
+                }
+                // Add the type of sequence in the redaction
+                if(current_function.type == Studied_Type::ST_Sequence && number != 0) {
+                    redaction += "</br>De plus, nous pouvons constater que s est une suite arithmétique de raison " + number.to_std_string() + ".";
+                }
+            } else if(polymonial.degree("n") == 1) {
+                // Calculate the knoown and unknown parts
+                scls::Complex known_part = polymonial.known_monomonial().factor();
+                scls::Complex unknown_part = polymonial.unknown_monomonials()[0].factor();
+
+                // Create the redaction
+                redaction += "Or, la différence représente une forme affine.";
+                redaction += " Pour étudier son signe, nous devons étudier les deux parties qui la constitue.";
+                redaction += " La partie connue du polynôme vaut " + known_part.to_std_string_simple() + ".";
+
+                // Calculate the solution
+                known_part *= -1;
+                scls::Complex solution = known_part / unknown_part;
+                redaction += " Donc, la différence est négative quand l'équation " + unknown_part.to_std_string_simple() + " * n &lt; " + known_part.to_std_string_simple() + " fonctionne";
+                redaction += " Or, cette équation est vérifiée pour n &lt; " + solution.to_std_string_simple() + ".";
+                redaction += " Donc, " + function_studied.to_std_string() + " &lt; 0 &lt;=&gt; n &lt; " + solution.to_std_string_simple() + ".";
+            }
+        }
+
+        return scls::Interval(0, 0);
+    }
+
     // Returns the interval of an increasing function
     scls::Interval Algebric_Solver_Page::function_variation(scls::Formula current_function, std::string& redaction) {
         scls::Formula function_plus = scls::replace_unknown(current_function, "n", "n + 1");
@@ -156,23 +202,12 @@ namespace pleos {
         redaction += "La forme s(n+1) - s(n) peut s'écrire " + function_difference.to_std_string() + ". ";
         redaction += "Pour étudier les variations de s, nous devons donc étudier le signe de s(n+1) - s(n).</br>";
 
-        // Only one polymonial
-        if(function_difference.is_simple_polymonial()) {
-            scls::Polymonial polymonial = function_difference;
-            if(polymonial.is_known()) {
-                // Only one number
-                scls::Fraction number = static_cast<scls::Complex>(polymonial.known_monomonial()).real();
-                if(number < 0) {
-                    redaction += "Or, " + function_difference.to_std_string() + " < 0, la suite est donc décroissante sur N.";
-                } else if(number > 0) {
-                    redaction += "Or, " + function_difference.to_std_string() + " > 0, la suite est donc croissante sur N.";
-                } else {
-                    redaction += "Or, s(n+1) - s(n) = 0, la suite est donc constante sur N.";
-                }
-                // Add the type of sequence in the redaction
-                if(number != 0) redaction += "</br>De plus, nous pouvons constater que s est une suite arithmétique de raison " + number.to_std_string() + ".";
-            }
-        }
+        // Create the needed function studied
+        Function_Studied fs;
+        fs.function_formula = function_difference;
+        fs.function_name = "s";
+        fs.function_number = 1;
+        function_sign(fs, redaction);
 
         return scls::Interval(0, 0);
     }

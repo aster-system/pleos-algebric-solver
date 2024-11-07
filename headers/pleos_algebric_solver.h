@@ -64,14 +64,22 @@ namespace pleos {
         //
         //******************
 
+        // Possible studied type
+        enum Studied_Type {ST_Sequence};
         // Datas about a studied function
         struct Function_Studied {
             // Formula of the function
             scls::Formula function_formula;
             // Name of the function
             std::string function_name = "";
+            // Number of the function
+            int function_number = 0;
+            // Type of the studied function
+            Studied_Type type = Studied_Type::ST_Sequence;
         };
 
+        // Returns the interval of a positive function
+        scls::Interval function_sign(Function_Studied current_function, std::string& redaction);
         // Returns the interval of an increasing function
         scls::Interval function_variation(scls::Formula current_function, std::string& redaction);
 
