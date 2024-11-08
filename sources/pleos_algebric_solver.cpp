@@ -150,7 +150,7 @@ namespace pleos {
     scls::Interval Algebric_Solver_Page::function_sign(Function_Studied current_function, std::string& redaction) {
         // Create the redaction
         scls::Formula& function_studied = current_function.function_formula;
-        redaction += "La forme " + current_function.function_name + " peut s'écrire " + function_studied.to_std_string() + ". ";
+        redaction += "Nous cherchons le signe de " + current_function.function_name + ", qui peut s'écrire " + function_studied.to_std_string() + ". ";
 
         // Only one polymonial
         if(function_studied.is_simple_polymonial()) {
@@ -160,23 +160,23 @@ namespace pleos {
                 // Only one number
                 scls::Fraction number = static_cast<scls::Complex>(polymonial.known_monomonial()).real();
                 if(number < 0) {
-                    redaction += "Or, " + function_studied.to_std_string() + " < 0, la suite est donc décroissante sur N.";
+                    redaction += "Or, " + function_studied.to_std_string() + " < 0, cette forme est donc négative sur N.";
                 } else if(number > 0) {
-                    redaction += "Or, " + function_studied.to_std_string() + " > 0, la suite est donc croissante sur N.";
+                    redaction += "Or, " + function_studied.to_std_string() + " > 0, cette forme est donc positive sur N.";
                 } else {
-                    redaction += "Or, s(n+1) - s(n) = 0, la suite est donc constante sur N.";
+                    redaction += "Or, " + current_function.function_name + " = 0, cette forme est donc nulle sur N.";
                 }
                 // Add the type of sequence in the redaction
                 if(current_function.type == Studied_Type::ST_Sequence && number != 0) {
                     redaction += "</br>De plus, nous pouvons constater que s est une suite arithmétique de raison " + number.to_std_string() + ".";
                 }
             } else if(polymonial.degree("n") == 1) {
-                // Calculate the knoown and unknown parts
+                // Calculate the known and unknown parts
                 scls::Complex known_part = polymonial.known_monomonial().factor();
                 scls::Complex unknown_part = polymonial.unknown_monomonials()[0].factor();
 
                 // Create the redaction
-                redaction += "Or, la différence représente une forme affine.";
+                redaction += "Or, cette forme est une forme affine.";
                 redaction += " Pour étudier son signe, nous devons étudier les deux parties qui la constitue.";
                 redaction += " La partie connue du polynôme vaut " + known_part.to_std_string_simple() + ".";
 
