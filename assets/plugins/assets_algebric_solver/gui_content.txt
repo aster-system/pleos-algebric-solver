@@ -175,21 +175,72 @@
 //
 //***************************************************
 
-<gui_object name="algebric_solver_function_body" type="scroller">
+<gui_object name="algebric_solver_functions_body" type="scroller">
 	<border bottom=1 left=1 right=1 top=1>
 	<height value=1 type=scale>
 	<width value=4/5 type=scale>
 	<x attach=right>
 	<y value=0 type=scale>
 </gui_object>
-<gui_object name="algebric_solver_function_title" type="text">
+<gui_object name="algebric_solver_functions_title" type="text">
 	<content font_size=80>Les fonctions</content>
 	<height value=80 type=pixel>
-	<parent name="algebric_solver_function_body">
+	<parent name="algebric_solver_functions_body">
 	<texture alignment=fit>
 	<width value=1 type=scale>
 	<x value=0 type=scale>
 	<y attach=top>
+</gui_object>
+<gui_object name="algebric_solver_functions_redaction" type="text">
+	<border bottom=1 left=1 right=1 top=1>
+	<content font_size=24>Pas de rédaction à afficher.</content>
+	<height value=24 type=pixel>
+	<parent name="algebric_solver_functions_body">
+	<texture alignment=fit>
+	<width value=4/5 type=scale>
+	<x value=1/2 type=object_scale>
+	<y attach=bottom attached_object="algebric_solver_functions_title" offset=5>
+</gui_object>
+<gui_object name="algebric_solver_functions_analyse_title" type="text">
+	<content font_size=30>Analyser une fonction</content>
+	<height value=30 type=pixel>
+	<parent name="algebric_solver_functions_body">
+	<texture alignment=fit>
+	<width value=2/3 type=scale>
+	<x value=1/2 type=object_scale>
+	<y attach=bottom attached_object="algebric_solver_functions_redaction" offset=15>
+</gui_object>
+<gui_object name="algebric_solver_functions_analyse_input_start" type="text">
+	<content font_size=30>f(x) = </content>
+	<height value=24 type=pixel>
+	<parent name="algebric_solver_functions_body">
+	<texture alignment=fit>
+	<width value=1/8 type=scale>
+	<x value=1/8 type=object_scale>
+	<y attach=bottom attached_object="algebric_solver_functions_analyse_title">
+</gui_object>
+<gui_object name="algebric_solver_functions_analyse_input" type="text_input">
+	<border bottom=1 left=1 right=1 top=1>
+	<height value=24 type=pixel>
+	<parent name="algebric_solver_functions_body">
+	<texture alignment=fit>
+	<width value=3/4 type=scale>
+	<x attach=right attached_object="algebric_solver_functions_analyse_input_start">
+	<y attach=bottom attached_object="algebric_solver_functions_analyse_title">
+</gui_object>
+<gui_object name="algebric_solver_functions_analyse" type="text">
+	<border bottom=1 left=1 right=1 top=1>
+	<content font_size=30>Analyser</content>
+	<height value=30 type=pixel>
+	<parent name="algebric_solver_functions_body">
+	<texture alignment=fit>
+	<width value=1/4 type=scale>
+	<x value=1/2 type=object_scale>
+	<y attach=bottom attached_object="algebric_solver_functions_analyse_input" offset=5>
+
+	<when event="overflighted">
+		<cursor type=pointing_hand_cursor>
+	</when>
 </gui_object>
 
 //***************************************************

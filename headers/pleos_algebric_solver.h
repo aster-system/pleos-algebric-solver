@@ -52,7 +52,7 @@ namespace pleos {
         // Loads an object in a page from XML
         virtual std::shared_ptr<scls::GUI_Object> __create_loaded_object_from_type(std::string object_name, std::string object_type, scls::GUI_Object* parent);
         std::shared_ptr<scls::GUI_Object> __create_loaded_object_from_type_complex_number(std::string object_name, std::string object_type, scls::GUI_Object* parent);
-        std::shared_ptr<scls::GUI_Object> __create_loaded_object_from_type_function(std::string object_name, std::string object_type, scls::GUI_Object* parent);
+        std::shared_ptr<scls::GUI_Object> __create_loaded_object_from_type_functions(std::string object_name, std::string object_type, scls::GUI_Object* parent);
         std::shared_ptr<scls::GUI_Object> __create_loaded_object_from_type_home(std::string object_name, std::string object_type, scls::GUI_Object* parent);
         std::shared_ptr<scls::GUI_Object> __create_loaded_object_from_type_navigation(std::string object_name, std::string object_type, scls::GUI_Object* parent);
         std::shared_ptr<scls::GUI_Object> __create_loaded_object_from_type_number_theory(std::string object_name, std::string object_type, scls::GUI_Object* parent);
@@ -78,8 +78,10 @@ namespace pleos {
             Studied_Type type = Studied_Type::ST_Sequence;
         };
 
-        // Returns the interval of a positive function
-        scls::Interval function_sign(Function_Studied current_function, std::string& redaction);
+        // Returns the set of roots of a function
+        scls::Set_Number function_roots(Function_Studied current_function, std::string& redaction);
+        // Returns the set of a positive function
+        scls::Set_Number function_sign(Function_Studied current_function, std::string& redaction);
         // Returns the interval of an increasing function
         scls::Interval function_variation(scls::Formula current_function, std::string& redaction);
 
@@ -91,6 +93,17 @@ namespace pleos {
 
         // Returns the current text to simplify
         inline std::string complex_number_simplify_input() const {if(a_complex_number_simplify_input.get() == 0) return std::string(); return a_complex_number_simplify_input.get()->text();};
+
+        //******************
+        //
+        // Functions handling
+        //
+        //******************
+
+        // Returns the current text to analyse
+        inline std::string functions_analyse_input() const {if(a_functions_analyse_input.get() == 0) return std::string(); return a_functions_analyse_input.get()->text();};
+        // Convert a string to a polymonial with functions datas
+        scls::Formula functions_string_to_polymonial();
 
         //******************
         //
@@ -119,7 +132,7 @@ namespace pleos {
         // Check the complex number event
         void check_complex_number_events();
         // Check the functions event
-        void check_function_events();
+        void check_functions_events();
         // Check the navigation event
         void check_navigation_events();
         // Check the sequences event
@@ -173,7 +186,7 @@ namespace pleos {
 
         // Pages
         std::shared_ptr<scls::GUI_Object> a_complex_number_page;
-        std::shared_ptr<scls::GUI_Object> a_function_page;
+        std::shared_ptr<scls::GUI_Object> a_functions_page;
         std::shared_ptr<scls::GUI_Object> a_home_page;
         std::shared_ptr<scls::GUI_Object> a_number_theory_page;
         std::shared_ptr<scls::GUI_Object> a_sequences_page;
@@ -183,6 +196,12 @@ namespace pleos {
         std::shared_ptr<scls::GUI_Text> a_complex_number_simplify_button;
         std::shared_ptr<scls::GUI_Text_Input> a_complex_number_simplify_input;
         std::shared_ptr<scls::GUI_Text> a_complex_number_simplify_result;
+
+        // Functions page
+        std::shared_ptr<scls::GUI_Text> a_functions_redaction;
+        // Analyse part
+        std::shared_ptr<scls::GUI_Text> a_functions_analyse_button;
+        std::shared_ptr<scls::GUI_Text_Input> a_functions_analyse_input;
 
         // Sequences page
         std::shared_ptr<scls::GUI_Text> a_sequences_redaction;
