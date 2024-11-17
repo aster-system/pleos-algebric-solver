@@ -9,10 +9,9 @@
 // By using the power of SCLS and other Aster System's tools, we created  this.
 // We want to make education easier for everyone (teachers, as students and pupils).
 // The software is made in french, because the main goal is France educational system.
-// For more information, see : https://aster-system.github.io/aster-system/projects/pleos.html.
 //
-// The "Atmosphere" part aims science lesson.
-// Its goal is to explain how the atmosphere works, easily for everyone.
+// The "Algebric Solver" part aims mathematics lessons.
+// Its goal is to solve a lot of communs problems quickly.
 //
 // This file contains the source code of pleos_algebric_solver.h.
 //
@@ -152,209 +151,6 @@ namespace pleos {
 
     //******************
     //
-    // Analyse handling
-    //
-    //******************
-
-    // Returns the set of roots of a function
-    scls::Set_Number Algebric_Solver_Page::function_roots(Function_Studied current_function, std::string& redaction) {
-        // Create the redaction
-        scls::Formula& function_studied = current_function.function_formula;
-        redaction += "Nous cherchons les racines de " + current_function.function_name + ", qui peut s'écrire " + function_studied.to_std_string() + ". ";
-        scls::Set_Number to_return = scls::Set_Number();
-
-        // Only one polymonial
-        if(function_studied.is_simple_polymonial()) {
-            scls::Polymonial polymonial = function_studied;
-            int degree = polymonial.degree("n").real().to_int();
-            if(polymonial.is_known()) {
-                // Only one number
-                scls::Fraction number = static_cast<scls::Complex>(polymonial.known_monomonial()).real();
-                redaction += "Or, " + function_studied.to_std_string() + " n'est pas égal à 0, cette forme n'a donc pas de racines.";
-            } else if(degree == 1) {
-                // Calculate the known and unknown parts
-                scls::Complex known_part = polymonial.known_monomonial().factor();
-                scls::Complex unknown_part = polymonial.unknown_monomonials()[0].factor();
-
-                // Create the redaction
-                redaction += "Or, cette forme est une forme affine.";
-                redaction += " Pour étudier son unique racine, nous devons étudier les deux parties qui la constitue.";
-                redaction += " La partie connue du polynôme vaut " + known_part.to_std_string_simple() + ".";
-
-                // Calculate the solution
-                known_part *= -1;
-                scls::Complex solution = known_part / unknown_part;
-                bool inverse_sign = false;
-                if((known_part.real() < 0 && unknown_part.real() > 0)) inverse_sign = true;
-                redaction += " Donc, la racine de cette forme est atteinte quand l'équation " + unknown_part.to_std_string_simple() + " * n = " + known_part.to_std_string_simple() + " fonctionne.";
-                redaction += " Or, cette équation est vérifiée pour n = " + solution.to_std_string_simple() + ".";
-                redaction += " Donc, " + function_studied.to_std_string() + " admet pour racine " + solution.to_std_string_simple() + ".";
-                scls::Interval interval;
-            } else if(degree == 2) {
-                // Calculate the known and unknown parts
-                scls::Complex a_part = polymonial.monomonial("n", 2).factor();
-                scls::Complex b_part = polymonial.monomonial("n").factor();
-                scls::Complex c_part = polymonial.known_monomonial().factor();
-                scls::Complex discriminant_complex = b_part * b_part - 4 * a_part * c_part;
-
-                // Create the redaction for the discriminant
-                redaction += "Or, cette forme est un polynôme de degré 2.";
-                redaction += " Pour étudier ses racines, nous devons étudier les trois parties qui la constitue.";
-                redaction += " Commençons par calculer le discriminant d de cette forme.";
-                redaction += " d = b * b + 4 * a * c = " + discriminant_complex.to_std_string_simple() + ".";
-
-                // Search the needed roots
-                scls::Fraction discriminant = discriminant_complex.real();
-                if(discriminant < 0) {
-                    redaction += " Or, d &lt; 0, donc cette forme n'a pas de solution dans l'ensemble des réels.";
-                } else if(discriminant == 0) {
-                    scls::Fraction solution = ((b_part * -1) / (2 * a_part)).real();
-                    redaction += " Or, d = 0, donc cette forme a une solution dans l'ensemble des réels.";
-                    redaction += " Cette solution est n = -b/2a = " + solution.to_std_string() + ".";
-                    to_return.add_number(solution);
-                } else {
-                    scls::Fraction sqrt_d = std::sqrt(discriminant.to_double());
-                    scls::Fraction solution_1 = (((b_part * -1) + sqrt_d) / (2 * a_part)).real();
-                    scls::Fraction solution_2 = (((b_part * -1) - sqrt_d) / (2 * a_part)).real();
-                    redaction += " Or, d > 0, donc cette forme a deux solutions dans l'ensemble des réels.";
-                    redaction += " La première solution est x1 = (-b + sqrt(d))/2a, qui est à peu prés égal à " + scls::format_number_to_text(solution_1.to_double()) + ".";
-                    redaction += " La deuxième solution est x2 = (-b - sqrt(d))/2a, qui est à peu prés égal à " + scls::format_number_to_text(solution_2.to_double()) + ".";
-                    to_return.add_number(solution_1); to_return.add_number(solution_2);
-                }
-            }
-        }
-
-        return to_return;
-    }
-
-    // Returns the set of a positive function
-    scls::Set_Number Algebric_Solver_Page::function_sign(Function_Studied current_function, std::string& redaction) {
-        // Create the redaction
-        scls::Formula& function_studied = current_function.function_formula;
-        redaction += "Nous cherchons le signe de " + current_function.function_name + ", qui peut s'écrire " + function_studied.to_std_string() + ". ";
-        scls::Set_Number to_return = scls::Set_Number();
-
-        // Only one polymonial
-        if(function_studied.is_simple_polymonial()) {
-            scls::Polymonial polymonial = function_studied;
-            int degree = polymonial.degree("n").real().to_int();
-            if(polymonial.is_known()) {
-                // Only one number
-                scls::Fraction number = static_cast<scls::Complex>(polymonial.known_monomonial()).real();
-                if(number < 0) {
-                    redaction += "Or, " + function_studied.to_std_string() + " &lt; 0, cette forme est donc négative sur N.";
-                } else if(number > 0) {
-                    redaction += "Or, " + function_studied.to_std_string() + " &gt; 0, cette forme est donc positive sur N.";
-                    // Create the needed interval
-                    scls::Interval interval; interval.set_start_infinite(true); interval.set_end_infinite(true);
-                    to_return = interval;
-                } else {
-                    redaction += "Or, " + current_function.function_name + " = 0, cette forme est donc nulle sur N.";
-                }
-                // Add the type of sequence in the redaction
-                if(current_function.type == Studied_Type::ST_Sequence && number != 0) {
-                    redaction += "</br>De plus, nous pouvons constater que s est une suite arithmétique de raison " + number.to_std_string() + ".";
-                }
-            } else if(polymonial.degree("n") == 1) {
-                // Calculate the known and unknown parts
-                scls::Complex known_part = polymonial.known_monomonial().factor();
-                scls::Complex unknown_part = polymonial.unknown_monomonials()[0].factor();
-
-                // Create the redaction
-                redaction += "Or, cette forme est une forme affine.";
-                redaction += " Pour étudier son signe, nous devons étudier les deux parties qui la constitue.";
-                redaction += " La partie connue du polynôme vaut " + known_part.to_std_string_simple() + ".";
-
-                // Calculate the solution
-                known_part *= -1;
-                scls::Complex solution = known_part / unknown_part;
-                bool inverse_sign = false;
-                if((known_part.real() < 0 && unknown_part.real() > 0)) inverse_sign = true;
-                redaction += " Donc, la différence est négative quand l'équation " + unknown_part.to_std_string_simple() + " * n &lt; " + known_part.to_std_string_simple() + " fonctionne.";
-                if(inverse_sign) {
-                    redaction += " Or, cette équation est vérifiée pour n &lt; " + solution.to_std_string_simple() + ".";
-                    redaction += " Donc, " + function_studied.to_std_string() + " &lt; 0 &lt;=&gt; n &lt; " + solution.to_std_string_simple() + ".";
-                    scls::Interval interval; interval.set_start(solution.real()); interval.set_end_infinite(true);
-                    to_return = interval;
-                } else {
-                    redaction += " Or, cette équation est vérifiée pour n &gt; " + solution.to_std_string_simple() + ".";
-                    redaction += " Donc, " + function_studied.to_std_string() + " &lt; 0 &lt;=&gt; n &gt; " + solution.to_std_string_simple() + ".";
-                    scls::Interval interval; interval.set_start_infinite(true); interval.set_end(solution.real());
-                    to_return = interval;
-                }
-            } else if(polymonial.degree("n") == 2) {
-                // Create the redaction
-                redaction += "Or, cette forme est une forme polymonial de degré 2.";
-                redaction += " Commençons par trouver les racines de cette forme.</br>";
-                // Create the needed function studied
-                scls::Set_Number result = function_roots(current_function, redaction);
-                redaction += "</br>";
-                // Search the sign
-                scls::Fraction a_part = polymonial.monomonial("n", 2).factor().real();
-                if(a_part > 0) {
-                    if(result.numbers().size() <= 0) {
-                        redaction += "De plus, a &gt; 0. Donc la forme est positive.";
-                    } else if(result.numbers().size() == 1) {
-                        redaction += "De plus, a &gt; 0. Donc la forme est positive, mais s'annule pour n = " + result.numbers().at(0).to_std_string_simple(7) + ".";
-                    } else {
-                        redaction += "De plus, a &gt; 0. Donc la forme est positive pour n &lt; " + result.numbers().at(0).to_std_string_simple(7) + " et n &gt; " + result.numbers().at(1).to_std_string_simple(7) + ".";
-                    }
-                } else {
-                    if(result.numbers().size() <= 0) {
-                        redaction += "De plus, a &lt; 0. Donc la forme est négative.";
-                    } else if(result.numbers().size() == 1) {
-                        redaction += "De plus, a &lt; 0. Donc la forme est négative, mais s'annule pour n = " + result.numbers().at(0).to_std_string_simple(7) + ".";
-                    } else {
-                        redaction += "De plus, a &lt; 0. Donc la forme est négative pour n &lt; " + result.numbers().at(0).to_std_string_simple(7) + " et n &gt; " + result.numbers().at(1).to_std_string_simple(7) + ".";
-                    }
-                }
-            }
-        }
-
-        return to_return;
-    }
-
-    // Returns the interval of an increasing function
-    scls::Interval Algebric_Solver_Page::function_variation(scls::Formula current_function, std::string& redaction) {
-        scls::Formula function_plus = scls::replace_unknown(current_function, "n", "n + 1");
-        scls::Formula function_difference = function_plus - current_function;
-
-        // Create the redaction
-        redaction += "La forme s(n+1) peut s'écrire " + function_plus.to_std_string() + ". ";
-        redaction += "La forme s(n+1) - s(n) peut s'écrire " + function_difference.to_std_string() + ". ";
-        redaction += "Pour étudier les variations de s, nous devons donc étudier le signe de s(n+1) - s(n).</br>";
-
-        // Create the needed function studied
-        Function_Studied fs;
-        fs.function_formula = function_difference;
-        fs.function_name = "s";
-        fs.function_number = 1;
-        scls::Set_Number result = function_sign(fs, redaction);
-        redaction += "</br>";
-
-        // Create the variation redaction
-        if(result.is_infinite()) {
-            redaction += "La suite s est donc strictement croissante sur N.";
-        } else if(result.is_empty()) {
-            redaction += "La suite s est donc strictement décroissante sur N.";
-        } else if(result.intervals().size() == 1) {
-            scls::Interval studied_interval = result.intervals()[0];
-            if(studied_interval.start_infinite()) {
-                redaction += "La suite s est donc strictement croissante sur N pour n &lt; " + studied_interval.end().to_std_string();
-                redaction += ", s'annule pour n = " + studied_interval.end().to_std_string();
-                redaction += " et est strictement décroissante sur N pour n &gt; " + studied_interval.end().to_std_string() + ".";
-            } else if(studied_interval.end_infinite()) {
-                redaction += "La suite s est donc strictement croissante sur N pour n &gt; " + studied_interval.start().to_std_string();
-                redaction += ", s'annule pour n = " + studied_interval.start().to_std_string();
-                redaction += " et est strictement décroissante sur N pour n &lt; " + studied_interval.start().to_std_string() + ".";
-            }
-        }
-
-        return scls::Interval(0, 0);
-    }
-
-    //******************
-    //
     // Functions handling
     //
     //******************
@@ -431,6 +227,11 @@ namespace pleos {
                 std::string functions_input_simplify = polymonial.to_std_string();
                 std::string final_text = "Nous avons la fonction f(x) = " + functions_input + " pour tout x appartenant à R.";
                 final_text += " Nous pouvons la simplifier sous la forme f(x) = " + functions_input_simplify + ".</br></br>";
+                // Study the variation of the function
+                Function_Studied fs;
+                fs.function_formula = polymonial;
+                fs.function_name = "f";
+                sequence_variation(fs, final_text);
                 // Apply the redaction
                 a_functions_redaction.get()->set_text(final_text);
                 a_functions_redaction.get()->set_height_in_pixel(a_functions_redaction.get()->texture()->get_image()->height());
@@ -464,7 +265,11 @@ namespace pleos {
                 std::string final_text = "Nous avons la suite s(n) = " + sequence_input + " pour tout n appartenant à N. ";
                 final_text += "Nous pouvons la simplifier sous la forme s(n) = " + sequence_input_simplify + ".</br></br>";
                 // Study the variation of the function
-                function_variation(polymonial, final_text);
+                Function_Studied fs;
+                fs.function_formula = polymonial;
+                fs.function_name = "s";
+                fs.function_unknown = "n";
+                sequence_variation(fs, final_text);
                 // Apply the redaction
                 a_sequences_redaction.get()->set_text(final_text);
                 a_sequences_redaction.get()->set_height_in_pixel(a_sequences_redaction.get()->texture()->get_image()->height());

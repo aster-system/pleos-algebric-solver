@@ -11,8 +11,8 @@
 // The software is made in french, because the main goal is France educational system.
 // For more information, see : https://aster-system.github.io/aster-system/projects/pleos.html.
 //
-// The "Atmosphere" part aims science lesson.
-// Its goal is to explain how the atmosphere works, easily for everyone.
+// The "Algebric Solver" part aims mathematics lessons.
+// Its goal is to solve a lot of communs problems quickly.
 //
 // This file contains the page of the Algebric Solver plugin.
 //
@@ -30,8 +30,8 @@
 #ifndef PLEOS_ALGEBRIC_SOLVER
 #define PLEOS_ALGEBRIC_SOLVER
 
-// Include SCLS Graphic Benoit
-#include "../../../scls-graphic-benoit/scls_graphic.h"
+// Include PLEOS Libs
+#include "../../pleos_libs/pleos_mathematics.h"
 
 // Possibles pages
 #define PLEOS_ALGEBRIC_SOLVER_COMPLEX_NUMBER_PAGE 0
@@ -57,33 +57,6 @@ namespace pleos {
         std::shared_ptr<scls::GUI_Object> __create_loaded_object_from_type_navigation(std::string object_name, std::string object_type, scls::GUI_Object* parent);
         std::shared_ptr<scls::GUI_Object> __create_loaded_object_from_type_number_theory(std::string object_name, std::string object_type, scls::GUI_Object* parent);
         std::shared_ptr<scls::GUI_Object> __create_loaded_object_from_type_sequences(std::string object_name, std::string object_type, scls::GUI_Object* parent);
-
-        //******************
-        //
-        // Analyse handling
-        //
-        //******************
-
-        // Possible studied type
-        enum Studied_Type {ST_Sequence};
-        // Datas about a studied function
-        struct Function_Studied {
-            // Formula of the function
-            scls::Formula function_formula;
-            // Name of the function
-            std::string function_name = "";
-            // Number of the function
-            int function_number = 0;
-            // Type of the studied function
-            Studied_Type type = Studied_Type::ST_Sequence;
-        };
-
-        // Returns the set of roots of a function
-        scls::Set_Number function_roots(Function_Studied current_function, std::string& redaction);
-        // Returns the set of a positive function
-        scls::Set_Number function_sign(Function_Studied current_function, std::string& redaction);
-        // Returns the interval of an increasing function
-        scls::Interval function_variation(scls::Formula current_function, std::string& redaction);
 
         //******************
         //
