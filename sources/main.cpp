@@ -37,13 +37,7 @@ int main(int argc, char* argv[]) {
     pleos::__Temp_Pleos_Window window(900, 600, argv[0]);
     window.load_from_xml("assets/window.txt");
 
-    scls::Formula f_1 = scls::string_to_formula("3x + 8");
-    scls::Formula f_2 = scls::string_to_formula("3x + 8");
-    f_1 /= f_2;
-    f_1 += f_2;
-    std::cout << "T " << f_1.to_std_string() << std::endl;
-
-    while(window.run() && false) {
+    while(window.run()) {
         window.update_event();
         window.update();
 

@@ -231,7 +231,7 @@ namespace pleos {
                 Function_Studied fs;
                 fs.function_formula = polymonial;
                 fs.function_name = "f";
-                sequence_variation(fs, final_text);
+                function_limit_pi(fs, final_text);
                 // Apply the redaction
                 a_functions_redaction.get()->set_text(final_text);
                 a_functions_redaction.get()->set_height_in_pixel(a_functions_redaction.get()->texture()->get_image()->height());
