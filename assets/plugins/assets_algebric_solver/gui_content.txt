@@ -202,8 +202,8 @@
 	<y attach=bottom attached_object="algebric_solver_functions_title" offset=5>
 </gui_object>
 <gui_object name="algebric_solver_functions_analyse_title" type="text">
-	<content font_size=30>Analyser une fonction</content>
-	<height value=30 type=pixel>
+	<content font_size=60>Analyser une fonction</content>
+	<height value=60 type=pixel>
 	<parent name="algebric_solver_functions_body">
 	<texture alignment=fit>
 	<width value=2/3 type=scale>
@@ -241,6 +241,40 @@
 	<when event="overflighted">
 		<cursor type=pointing_hand_cursor>
 	</when>
+</gui_object>
+// Analyse elements
+<gui_object name="algebric_solver_functions_analyse_elements_title" type="text">
+	<content font_size=30>Ajouter un élément d'analyse</content>
+	<height value=30 type=pixel>
+	<parent name="algebric_solver_functions_body">
+	<texture alignment=fit>
+	<width value=1/2 type=scale>
+	<x value=1/2 type=object_scale>
+	<y attach=bottom attached_object="algebric_solver_functions_analyse" offset=15>
+</gui_object>
+<gui_object name="algebric_solver_functions_analyse_elements_value" type="text">
+	<border bottom=1 left=1 right=1 top=1>
+	<content font_size=30>Image de x</content>
+	<height value=30 type=pixel>
+	<parent name="algebric_solver_functions_body">
+	<texture alignment=fit>
+	<width value=1/5 type=scale>
+	<x value=1/4 type=object_scale>
+	<y attach=bottom attached_object="algebric_solver_functions_analyse_elements_title" offset=5>
+
+	<when event="overflighted">
+		<cursor type=pointing_hand_cursor>
+	</when>
+</gui_object>
+<gui_object name="algebric_solver_functions_analyse_elements" type="scroller">
+	<border bottom=1 left=1 right=1 top=1>
+	<content font_size=30>Image de x</content>
+	<height value=2/5>
+	<parent name="algebric_solver_functions_body">
+	<texture alignment=fit>
+	<width value=3/4 type=scale>
+	<x value=1/2 type=object_scale>
+	<y attach=bottom attached_object="algebric_solver_functions_analyse_elements_value" offset=5>
 </gui_object>
 
 //***************************************************

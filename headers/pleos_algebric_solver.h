@@ -77,6 +77,18 @@ namespace pleos {
         inline std::string functions_analyse_input() const {if(a_functions_analyse_input.get() == 0) return std::string(); return a_functions_analyse_input.get()->text();};
         // Convert a string to a polymonial with functions datas
         scls::Formula functions_string_to_polymonial();
+        // Load an image finder in the elements
+        void load_function_analyse_image_finder();
+        // Place the elements in the functions analyse scroller
+        inline void place_functions_analyse_elements() {
+            if(a_functions_analyse_elements_content.size()>0) {
+                a_functions_analyse_elements_content[0].parent.get()->attach_bottom_in_parent();
+            } for(int i = 1;i<static_cast<int>(a_functions_analyse_elements_content.size());i++) {
+                a_functions_analyse_elements_content[i].parent.get()->attach_top_of_object_in_parent(a_functions_analyse_elements_content[i - 1].parent.get());
+            } a_functions_analyse_elements.get()->check_scroller();
+        };
+        // Unloads the functions analyse elements
+        inline void unload_functions_analyse_elements(){a_functions_analyse_elements.get()->reset();a_functions_analyse_elements_content.clear();};
 
         //******************
         //
@@ -173,8 +185,24 @@ namespace pleos {
         // Functions page
         std::shared_ptr<scls::GUI_Text> a_functions_redaction;
         // Analyse part
+        struct __Function_Analyse_Element {
+
+            #ifndef PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_IMAGE
+            #define PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_IMAGE 0
+            #endif // PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_IMAGE
+
+            // Type of element
+            unsigned char type = PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_IMAGE;
+
+            // GUI part of an element for a function analyse
+            std::shared_ptr<scls::GUI_Object> parent;
+            std::shared_ptr<scls::GUI_Text> title;
+        };
         std::shared_ptr<scls::GUI_Text> a_functions_analyse_button;
         std::shared_ptr<scls::GUI_Text_Input> a_functions_analyse_input;
+        std::shared_ptr<scls::GUI_Scroller> a_functions_analyse_elements;
+        std::vector<__Function_Analyse_Element> a_functions_analyse_elements_content;
+        std::shared_ptr<scls::GUI_Text> a_functions_analyse_elements_value_button;
 
         // Sequences page
         std::shared_ptr<scls::GUI_Text> a_sequences_redaction;

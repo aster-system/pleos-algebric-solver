@@ -81,6 +81,12 @@ namespace pleos {
         if(object_name == "algebric_solver_functions_body") {
             a_functions_page = *parent->new_object<scls::GUI_Text>(object_name);
             return a_functions_page;
+        } else if(object_name == "algebric_solver_functions_analyse_elements") {
+            a_functions_analyse_elements = *parent->new_object<scls::GUI_Scroller>(object_name);
+            return a_functions_analyse_elements;
+        } else if(object_name == "algebric_solver_functions_analyse_elements_value") {
+            a_functions_analyse_elements_value_button = *parent->new_object<scls::GUI_Text>(object_name);
+            return a_functions_analyse_elements_value_button;
         } else if(object_name == "algebric_solver_functions_redaction") {
             a_functions_redaction = *parent->new_object<scls::GUI_Text>(object_name);
             a_functions_redaction.get()->set_max_width(800);
@@ -157,6 +163,31 @@ namespace pleos {
 
     // Convert a string to a polymonial with functions datas
     scls::Formula Algebric_Solver_Page::functions_string_to_polymonial() {scls::String_To_Formula_Parse parser;return parser.string_to_formula(functions_analyse_input());}
+    // Load an image finder in the elements
+    void Algebric_Solver_Page::load_function_analyse_image_finder() {
+        __Function_Analyse_Element new_element;
+
+        // Create the parent object
+        std::string object_name = a_functions_analyse_elements.get()->name() + "-object_" + std::to_string(a_functions_analyse_elements_content.size());
+        std::shared_ptr<scls::GUI_Object> current_object = *a_functions_analyse_elements.get()->new_object<scls::GUI_Object>(object_name);
+        current_object.get()->set_border_width_in_pixel(1);
+        current_object.get()->set_height_in_pixel(36);
+        current_object.get()->set_width_in_scale(1);
+        new_element.parent = current_object;
+        // Create the title object
+        std::shared_ptr<scls::GUI_Text> current_title = *current_object.get()->new_object<scls::GUI_Text>(object_name + "_title");
+        current_title.get()->set_height_in_pixel(34);
+        current_title.get()->set_width_in_scale(scls::Fraction(1, 2));
+        current_title.get()->set_y_in_object_scale(scls::Fraction(1, 2));
+        current_title.get()->set_text("Image de f pour x =");
+        new_element.title = current_title;
+
+        // Add the element
+        a_functions_analyse_elements_content.push_back(new_element);
+
+        // Place the elements in the scroller
+        place_functions_analyse_elements();
+    }
 
     //******************
     //
@@ -236,6 +267,11 @@ namespace pleos {
                 a_functions_redaction.get()->set_text(final_text);
                 a_functions_redaction.get()->set_height_in_pixel(a_functions_redaction.get()->texture()->get_image()->height());
             }
+        }
+
+        // Check the elements
+        if(a_functions_analyse_elements_value_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) {
+            load_function_analyse_image_finder();
         }
     }
 
