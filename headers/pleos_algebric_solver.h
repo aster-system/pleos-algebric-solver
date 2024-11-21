@@ -47,6 +47,25 @@ namespace pleos {
         // Class representating the algebric solver page for PLEOS
     public:
 
+        // Analyse element
+        struct __Function_Analyse_Element {
+
+            #ifndef PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_IMAGE
+            #define PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_IMAGE 0
+            #endif // PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_IMAGE
+            #ifndef PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_LIMIT
+            #define PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_LIMIT 1
+            #endif // PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_LIMIT
+
+            // Type of element
+            unsigned char type = PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_IMAGE;
+
+            // GUI part of an element for a function analyse
+            std::shared_ptr<scls::GUI_Text_Input> single_input;
+            std::shared_ptr<scls::GUI_Object> parent;
+            std::shared_ptr<scls::GUI_Text> title;
+        };
+
         // Algebric_Solver_Page constructor
         Algebric_Solver_Page(scls::_Window_Advanced_Struct* window_struct, std::string name);
         // Loads an object in a page from XML
@@ -78,7 +97,11 @@ namespace pleos {
         // Convert a string to a polymonial with functions datas
         scls::Formula functions_string_to_polymonial();
         // Load an image finder in the elements
+        __Function_Analyse_Element& load_function_analyse_element(unsigned char type);
+        // Load an image finder in the elements
         void load_function_analyse_image_finder();
+        // Load a limit finder in the elements
+        void load_function_analyse_limit_finder();
         // Place the elements in the functions analyse scroller
         inline void place_functions_analyse_elements() {
             if(a_functions_analyse_elements_content.size()>0) {
@@ -185,23 +208,11 @@ namespace pleos {
         // Functions page
         std::shared_ptr<scls::GUI_Text> a_functions_redaction;
         // Analyse part
-        struct __Function_Analyse_Element {
-
-            #ifndef PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_IMAGE
-            #define PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_IMAGE 0
-            #endif // PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_IMAGE
-
-            // Type of element
-            unsigned char type = PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_IMAGE;
-
-            // GUI part of an element for a function analyse
-            std::shared_ptr<scls::GUI_Object> parent;
-            std::shared_ptr<scls::GUI_Text> title;
-        };
         std::shared_ptr<scls::GUI_Text> a_functions_analyse_button;
         std::shared_ptr<scls::GUI_Text_Input> a_functions_analyse_input;
         std::shared_ptr<scls::GUI_Scroller> a_functions_analyse_elements;
         std::vector<__Function_Analyse_Element> a_functions_analyse_elements_content;
+        std::shared_ptr<scls::GUI_Text> a_functions_analyse_elements_limit_button;
         std::shared_ptr<scls::GUI_Text> a_functions_analyse_elements_value_button;
 
         // Sequences page

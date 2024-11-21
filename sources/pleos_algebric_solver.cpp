@@ -87,6 +87,9 @@ namespace pleos {
         } else if(object_name == "algebric_solver_functions_analyse_elements_value") {
             a_functions_analyse_elements_value_button = *parent->new_object<scls::GUI_Text>(object_name);
             return a_functions_analyse_elements_value_button;
+        } else if(object_name == "algebric_solver_functions_analyse_elements_limit") {
+            a_functions_analyse_elements_limit_button = *parent->new_object<scls::GUI_Text>(object_name);
+            return a_functions_analyse_elements_limit_button;
         } else if(object_name == "algebric_solver_functions_redaction") {
             a_functions_redaction = *parent->new_object<scls::GUI_Text>(object_name);
             a_functions_redaction.get()->set_max_width(800);
@@ -164,8 +167,8 @@ namespace pleos {
     // Convert a string to a polymonial with functions datas
     scls::Formula Algebric_Solver_Page::functions_string_to_polymonial() {scls::String_To_Formula_Parse parser;return parser.string_to_formula(functions_analyse_input());}
     // Load an image finder in the elements
-    void Algebric_Solver_Page::load_function_analyse_image_finder() {
-        __Function_Analyse_Element new_element;
+    Algebric_Solver_Page::__Function_Analyse_Element& Algebric_Solver_Page::load_function_analyse_element(unsigned char type) {
+        Algebric_Solver_Page::__Function_Analyse_Element new_element;
 
         // Create the parent object
         std::string object_name = a_functions_analyse_elements.get()->name() + "-object_" + std::to_string(a_functions_analyse_elements_content.size());
@@ -178,12 +181,50 @@ namespace pleos {
         std::shared_ptr<scls::GUI_Text> current_title = *current_object.get()->new_object<scls::GUI_Text>(object_name + "_title");
         current_title.get()->set_height_in_pixel(34);
         current_title.get()->set_width_in_scale(scls::Fraction(1, 2));
+        current_title.get()->set_x_in_object_scale(scls::Fraction(1, 4));
         current_title.get()->set_y_in_object_scale(scls::Fraction(1, 2));
-        current_title.get()->set_text("Image de f pour x =");
+        if(type == PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_IMAGE) {
+            current_title.get()->set_text("Image de f pour x =");
+        } else if(type == PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_LIMIT) {
+            current_title.get()->set_text("Image de f pour x tendant vers");
+        }
         new_element.title = current_title;
 
         // Add the element
+        new_element.type = type;
         a_functions_analyse_elements_content.push_back(new_element);
+        return a_functions_analyse_elements_content[a_functions_analyse_elements_content.size() - 1];
+    }
+    // Load an image finder in the elements
+    void Algebric_Solver_Page::load_function_analyse_image_finder() {
+        Algebric_Solver_Page::__Function_Analyse_Element& new_element = load_function_analyse_element(PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_IMAGE);
+
+        // Create the image input
+        std::string object_name = new_element.parent.get()->name();
+        std::shared_ptr<scls::GUI_Text_Input> current_input = *new_element.parent.get()->new_object<scls::GUI_Text_Input>(object_name + "_image_input");
+        current_input.get()->set_border_width_in_pixel(1);
+        current_input.get()->set_height_in_pixel(32);
+        current_input.get()->set_width_in_scale(scls::Fraction(1, 3));
+        current_input.get()->set_x_in_object_scale(scls::Fraction(3, 4));
+        current_input.get()->set_y_in_object_scale(scls::Fraction(1, 2));
+        new_element.single_input = current_input;
+
+        // Place the elements in the scroller
+        place_functions_analyse_elements();
+    }
+    // Load a limit finder in the elements
+    void Algebric_Solver_Page::load_function_analyse_limit_finder() {
+        Algebric_Solver_Page::__Function_Analyse_Element& new_element = load_function_analyse_element(PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_LIMIT);
+
+        // Create the limit input
+        std::string object_name = new_element.parent.get()->name();
+        std::shared_ptr<scls::GUI_Text_Input> current_input = *new_element.parent.get()->new_object<scls::GUI_Text_Input>(object_name + "_image_input");
+        current_input.get()->set_border_width_in_pixel(1);
+        current_input.get()->set_height_in_pixel(32);
+        current_input.get()->set_width_in_scale(scls::Fraction(1, 3));
+        current_input.get()->set_x_in_object_scale(scls::Fraction(3, 4));
+        current_input.get()->set_y_in_object_scale(scls::Fraction(1, 2));
+        new_element.single_input = current_input;
 
         // Place the elements in the scroller
         place_functions_analyse_elements();
@@ -258,11 +299,29 @@ namespace pleos {
                 std::string functions_input_simplify = polymonial.to_std_string();
                 std::string final_text = "Nous avons la fonction f(x) = " + functions_input + " pour tout x appartenant à R.";
                 final_text += " Nous pouvons la simplifier sous la forme f(x) = " + functions_input_simplify + ".</br></br>";
-                // Study the variation of the function
+                // Do the needed analyse
                 Function_Studied fs;
                 fs.function_formula = polymonial;
                 fs.function_name = "f";
-                function_limit_pi(fs, final_text);
+                for(int i = 0;i<static_cast<int>(a_functions_analyse_elements_content.size());i++) {
+                    if(a_functions_analyse_elements_content[i].type == PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_IMAGE) {
+                        // Get the image of the function
+                        scls::Formula value = scls::string_to_formula(a_functions_analyse_elements_content[i].single_input.get()->text());
+                        function_image(fs, value, final_text);
+                        final_text += "</br></br>";
+                    } else if(a_functions_analyse_elements_content[i].type == PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_LIMIT) {
+                        // Get the image of the function
+                        scls::Formula value = scls::string_to_formula(a_functions_analyse_elements_content[i].single_input.get()->text());
+                        std::string needed_text = a_functions_analyse_elements_content[i].single_input.get()->text(); scls::Limit needed_limit;
+                        if(needed_text == "+inf") {needed_limit.set_pi();}
+                        else if(needed_text == "-inf") {needed_limit.set_mi();}
+                        else if(needed_text == "0+") {needed_limit.set_pz();}
+                        else if(needed_text == "0-") {needed_limit.set_mz();}
+                        else {needed_limit = scls::Fraction::from_std_string(needed_text);}
+                        function_limit(fs, needed_limit, final_text);
+                        final_text += "</br></br>";
+                    }
+                }
                 // Apply the redaction
                 a_functions_redaction.get()->set_text(final_text);
                 a_functions_redaction.get()->set_height_in_pixel(a_functions_redaction.get()->texture()->get_image()->height());
@@ -272,6 +331,8 @@ namespace pleos {
         // Check the elements
         if(a_functions_analyse_elements_value_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) {
             load_function_analyse_image_finder();
+        } if(a_functions_analyse_elements_limit_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) {
+            load_function_analyse_limit_finder();
         }
     }
 
