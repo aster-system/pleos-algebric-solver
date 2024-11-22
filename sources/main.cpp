@@ -34,7 +34,7 @@
 SCLS_INIT
 
 int main(int argc, char* argv[]) {
-    pleos::__Temp_Pleos_Window window(900, 600, argv[0]);
+    /*pleos::__Temp_Pleos_Window window(900, 600, argv[0]);
     window.load_from_xml("assets/window.txt");
 
     while(window.run()) {
@@ -42,7 +42,22 @@ int main(int argc, char* argv[]) {
         window.update();
 
         window.render();
-    }
+    } //*/
+
+    scls::Fraction base(11);
+    scls::Fraction number(35);
+    scls::Fraction exponent(2024);
+
+    for(int i = 0;i<7;i++) {
+        number = static_cast<int>(number.to_double()) % static_cast<int>(base.to_double());
+        std::cout << "0 " << i << " " << number << " " << exponent << std::endl;
+        int to_add = 2;
+        exponent /= to_add;
+        std::cout << "1 " << i << " " << number << " " << exponent << std::endl;
+        number = std::pow(number.to_double(), to_add);
+        std::cout << "A " << i << " " << number << " " << exponent << std::endl;
+
+    } std::cout << "Fin " << number << " " << exponent << std::endl;
 
     return 0;
 }

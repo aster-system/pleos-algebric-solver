@@ -52,6 +52,8 @@ namespace pleos {
         if(to_return.get() != 0) return to_return;
         to_return = __create_loaded_object_from_type_number_theory(object_name, object_type, parent);
         if(to_return.get() != 0) return to_return;
+        to_return = __create_loaded_object_from_type_probabilities(object_name, object_type, parent);
+        if(to_return.get() != 0) return to_return;
         to_return = __create_loaded_object_from_type_sequences(object_name, object_type, parent);
         if(to_return.get() != 0) return to_return;
 
@@ -121,6 +123,9 @@ namespace pleos {
         } else if(object_name == "algebric_solver_navigation_number_theory_button") {
             a_number_theory_button = *parent->new_object<scls::GUI_Text>(object_name);
             return a_number_theory_button;
+        } else if(object_name == "algebric_solver_navigation_probabilities_button") {
+            a_probabilities_button = *parent->new_object<scls::GUI_Text>(object_name);
+            return a_probabilities_button;
         } else if(object_name == "algebric_solver_navigation_sequences_button") {
             a_sequences_button = *parent->new_object<scls::GUI_Text>(object_name);
             return a_sequences_button;
@@ -130,6 +135,12 @@ namespace pleos {
         if(object_name == "algebric_solver_number_theory_body") {
             a_number_theory_page = *parent->new_object<scls::GUI_Object>(object_name);
             return a_number_theory_page;
+        } return std::shared_ptr<scls::GUI_Object>();
+    }
+    std::shared_ptr<scls::GUI_Object> Algebric_Solver_Page::__create_loaded_object_from_type_probabilities(std::string object_name, std::string object_type, scls::GUI_Object* parent) {
+        if(object_name == "algebric_solver_probabilities_body") {
+            a_probabilities_page = *parent->new_object<scls::GUI_Object>(object_name);
+            return a_probabilities_page;
         } return std::shared_ptr<scls::GUI_Object>();
     }
     std::shared_ptr<scls::GUI_Object> Algebric_Solver_Page::__create_loaded_object_from_type_sequences(std::string object_name, std::string object_type, scls::GUI_Object* parent) {
@@ -342,6 +353,7 @@ namespace pleos {
         if(a_function_navigation_button.get() != 0 && a_function_navigation_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) display_function_page();
         if(a_home_navigation_button.get() != 0 && a_home_navigation_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) display_home_page();
         if(a_number_theory_button.get() != 0 && a_number_theory_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) display_number_theory_page();
+        if(a_probabilities_button.get() != 0 && a_probabilities_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) display_probabilities_page();
         if(a_sequences_button.get() != 0 && a_sequences_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) display_sequences_page();
     }
 
@@ -431,6 +443,15 @@ namespace pleos {
         set_current_page(PLEOS_ALGEBRIC_SOLVER_NUMBER_THEORY_PAGE);
     }
 
+    // Displays the probability page
+    void Algebric_Solver_Page::display_probabilities_page() {
+        hide_all();
+        if(a_probabilities_page.get() != 0) a_probabilities_page.get()->set_visible(true);
+
+        // Set the needed datas
+        set_current_page(PLEOS_ALGEBRIC_SOLVER_PROBABILITIES_PAGE);
+    }
+
     // Displays the sequences page
     void Algebric_Solver_Page::display_sequences_page() {
         hide_all();
@@ -448,6 +469,7 @@ namespace pleos {
         if(a_functions_page.get() != 0) a_functions_page.get()->set_visible(false);
         if(a_home_page.get() != 0) a_home_page.get()->set_visible(false);
         if(a_number_theory_page.get() != 0) a_number_theory_page.get()->set_visible(false);
+        if(a_probabilities_page.get() != 0) a_probabilities_page.get()->set_visible(false);
         if(a_sequences_page.get() != 0) a_sequences_page.get()->set_visible(false);
 
         // Clear the sequences part

@@ -39,6 +39,7 @@
 #define PLEOS_ALGEBRIC_SOLVER_NUMBER_THEORY_PAGE 2
 #define PLEOS_ALGEBRIC_SOLVER_FUNCTION_PAGE 3
 #define PLEOS_ALGEBRIC_SOLVER_SEQUENCES_PAGE 4
+#define PLEOS_ALGEBRIC_SOLVER_PROBABILITIES_PAGE 5
 
 // The namespace "pleos" is used to simplify the all.
 namespace pleos {
@@ -75,6 +76,7 @@ namespace pleos {
         std::shared_ptr<scls::GUI_Object> __create_loaded_object_from_type_home(std::string object_name, std::string object_type, scls::GUI_Object* parent);
         std::shared_ptr<scls::GUI_Object> __create_loaded_object_from_type_navigation(std::string object_name, std::string object_type, scls::GUI_Object* parent);
         std::shared_ptr<scls::GUI_Object> __create_loaded_object_from_type_number_theory(std::string object_name, std::string object_type, scls::GUI_Object* parent);
+        std::shared_ptr<scls::GUI_Object> __create_loaded_object_from_type_probabilities(std::string object_name, std::string object_type, scls::GUI_Object* parent);
         std::shared_ptr<scls::GUI_Object> __create_loaded_object_from_type_sequences(std::string object_name, std::string object_type, scls::GUI_Object* parent);
 
         //******************
@@ -162,6 +164,8 @@ namespace pleos {
         void display_home_page();
         // Displays the number theory page
         void display_number_theory_page();
+        // Displays the probabilities page
+        void display_probabilities_page();
         // Displays the sequences page
         void display_sequences_page();
         // Hides all the pages
@@ -190,6 +194,7 @@ namespace pleos {
         std::shared_ptr<scls::GUI_Text> a_function_navigation_button;
         std::shared_ptr<scls::GUI_Text> a_home_navigation_button;
         std::shared_ptr<scls::GUI_Text> a_number_theory_button;
+        std::shared_ptr<scls::GUI_Text> a_probabilities_button;
         std::shared_ptr<scls::GUI_Text> a_sequences_button;
 
         // Pages
@@ -197,6 +202,7 @@ namespace pleos {
         std::shared_ptr<scls::GUI_Object> a_functions_page;
         std::shared_ptr<scls::GUI_Object> a_home_page;
         std::shared_ptr<scls::GUI_Object> a_number_theory_page;
+        std::shared_ptr<scls::GUI_Object> a_probabilities_page;
         std::shared_ptr<scls::GUI_Object> a_sequences_page;
 
         // Complex number page

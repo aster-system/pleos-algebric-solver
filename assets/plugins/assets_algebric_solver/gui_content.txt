@@ -71,6 +71,18 @@
 		<cursor type=pointing_hand_cursor>
 	</when>
 </gui_object>
+<gui_object name="algebric_solver_navigation_probabilities_button" type="text">
+	<content font_size=40>Probabilités</content>
+	<height value=40 type=pixel>
+	<parent name="algebric_solver_navigation">
+	<texture alignment=fit>
+	<width value=1 type=scale>
+	<y attach=bottom attached_object="algebric_solver_navigation_sequences_button">
+
+	<when event="overflighted">
+		<cursor type=pointing_hand_cursor>
+	</when>
+</gui_object>
 
 //***************************************************
 //
@@ -308,6 +320,29 @@
 	<content font_size=80>La théorie des nombres</content>
 	<height value=80 type=pixel>
 	<parent name="algebric_solver_number_theory_body">
+	<texture alignment=fit>
+	<width value=1 type=scale>
+	<x value=0 type=scale>
+	<y attach=top>
+</gui_object>
+
+//***************************************************
+//
+//   PROBABILITIES
+//
+//***************************************************
+
+<gui_object name="algebric_solver_probabilities_body" type="scroller">
+	<border bottom=1 left=1 right=1 top=1>
+	<height value=1 type=scale>
+	<width value=4/5 type=scale>
+	<x attach=right>
+	<y value=0 type=scale>
+</gui_object>
+<gui_object name="algebric_solver_probabilities_title" type="text">
+	<content font_size=80>Probabilités</content>
+	<height value=80 type=pixel>
+	<parent name="algebric_solver_probabilities_body">
 	<texture alignment=fit>
 	<width value=1 type=scale>
 	<x value=0 type=scale>
