@@ -176,7 +176,7 @@ namespace pleos {
     //******************
 
     // Convert a string to a polymonial with functions datas
-    scls::Formula Algebric_Solver_Page::functions_string_to_polymonial() {scls::String_To_Formula_Parse parser;return parser.string_to_formula(functions_analyse_input());}
+    scls::Formula Algebric_Solver_Page::functions_string_to_formula() {scls::String_To_Formula_Parse parser;return parser.string_to_formula(functions_analyse_input());}
     // Load an image finder in the elements
     Algebric_Solver_Page::__Function_Analyse_Element& Algebric_Solver_Page::load_function_analyse_element(unsigned char type) {
         Algebric_Solver_Page::__Function_Analyse_Element new_element;
@@ -306,13 +306,13 @@ namespace pleos {
             std::string functions_input = functions_analyse_input();
             if(functions_input != "") {
                 // Create the redaction
-                scls::Formula polymonial = functions_string_to_polymonial();
-                std::string functions_input_simplify = polymonial.to_std_string();
+                scls::Formula formula = functions_string_to_formula();
+                std::string functions_input_simplify = formula.to_std_string();
                 std::string final_text = "Nous avons la fonction f(x) = " + functions_input + " pour tout x appartenant à R.";
                 final_text += " Nous pouvons la simplifier sous la forme f(x) = " + functions_input_simplify + ".</br></br>";
                 // Do the needed analyse
                 Function_Studied fs;
-                fs.function_formula = polymonial;
+                fs.function_formula = formula;
                 fs.function_name = "f";
                 for(int i = 0;i<static_cast<int>(a_functions_analyse_elements_content.size());i++) {
                     if(a_functions_analyse_elements_content[i].type == PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_IMAGE) {
@@ -321,7 +321,7 @@ namespace pleos {
                         function_image(fs, value, final_text);
                         final_text += "</br></br>";
                     } else if(a_functions_analyse_elements_content[i].type == PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_LIMIT) {
-                        // Get the image of the function
+                        // Get the limit of the function
                         scls::Formula value = scls::string_to_formula(a_functions_analyse_elements_content[i].single_input.get()->text());
                         std::string needed_text = a_functions_analyse_elements_content[i].single_input.get()->text(); scls::Limit needed_limit;
                         if(needed_text == "+inf") {needed_limit.set_pi();}

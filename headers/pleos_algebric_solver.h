@@ -97,7 +97,7 @@ namespace pleos {
         // Returns the current text to analyse
         inline std::string functions_analyse_input() const {if(a_functions_analyse_input.get() == 0) return std::string(); return a_functions_analyse_input.get()->text();};
         // Convert a string to a polymonial with functions datas
-        scls::Formula functions_string_to_polymonial();
+        scls::Formula functions_string_to_formula();
         // Load an image finder in the elements
         __Function_Analyse_Element& load_function_analyse_element(unsigned char type);
         // Load an image finder in the elements
