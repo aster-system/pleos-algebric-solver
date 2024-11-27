@@ -141,6 +141,22 @@ namespace pleos {
         if(object_name == "algebric_solver_probabilities_body") {
             a_probabilities_page = *parent->new_object<scls::GUI_Object>(object_name);
             return a_probabilities_page;
+        } else if(object_name == "algebric_solver_probabilities_tree_create") {
+            a_probabilities_tree_create = *parent->new_object<scls::GUI_Text>(object_name);
+            return a_probabilities_tree_create;
+        } else if(object_name == "algebric_solver_probabilities_universe") {
+            a_probabilities_universe = *parent->new_object<scls::GUI_Scroller>(object_name);
+            return a_probabilities_universe;
+        } else if(object_name == "algebric_solver_probabilities_universe_add_element") {
+            a_probabilities_universe_add_element = *parent->new_object<scls::GUI_Text>(object_name);
+            return a_probabilities_universe_add_element;
+        } else if(object_name == "algebric_solver_probabilities_universe_add_element_conditionnal") {
+            a_probabilities_universe_add_element_conditionnal = *parent->new_object<scls::GUI_Text>(object_name);
+            return a_probabilities_universe_add_element_conditionnal;
+        } else if(object_name == "algebric_solver_probabilities_redaction") {
+            a_probabilities_redaction = *parent->new_object<scls::GUI_Text>(object_name);
+            a_probabilities_redaction.get()->set_max_width(800);
+            return a_probabilities_redaction;
         } return std::shared_ptr<scls::GUI_Object>();
     }
     std::shared_ptr<scls::GUI_Object> Algebric_Solver_Page::__create_loaded_object_from_type_sequences(std::string object_name, std::string object_type, scls::GUI_Object* parent) {
@@ -243,6 +259,91 @@ namespace pleos {
 
     //******************
     //
+    // Probabilities handling
+    //
+    //******************
+
+    // Add the base of a simple element in the universe
+    Algebric_Solver_Page::__Probability_Universe_Element& Algebric_Solver_Page::__add_universe_element(unsigned char type) {
+        Algebric_Solver_Page::__Probability_Universe_Element new_element;
+
+        // Create the parent object
+        std::string object_name = a_probabilities_universe.get()->name() + "-object_" + std::to_string(a_probabilities_universe_elements.size());
+        std::shared_ptr<scls::GUI_Object> current_object = *a_probabilities_universe.get()->new_object<scls::GUI_Object>(object_name);
+        current_object.get()->set_border_width_in_pixel(1);
+        current_object.get()->set_height_in_pixel(36);
+        current_object.get()->set_width_in_scale(1);
+        new_element.parent = current_object;
+        // Create the title object
+        std::shared_ptr<scls::GUI_Text> current_title = *current_object.get()->new_object<scls::GUI_Text>(object_name + "_title_1");
+        current_title.get()->set_height_in_pixel(28);
+        current_title.get()->set_width_in_scale(scls::Fraction(1, 5));
+        current_title.get()->set_x_in_object_scale(scls::Fraction(1, 10));
+        current_title.get()->set_y_in_object_scale(scls::Fraction(1, 2));
+        current_title.get()->set_text("Évènement");
+        new_element.title_1 = current_title;
+        // Create the input for the name of the object
+        std::shared_ptr<scls::GUI_Text_Input> name_input = *current_object.get()->new_object<scls::GUI_Text_Input>(object_name + "_name");
+        name_input.get()->set_border_width_in_pixel(1);
+        name_input.get()->set_height_in_pixel(26);
+        name_input.get()->set_width_in_scale(scls::Fraction(1, 10));
+        name_input.get()->set_x_in_object_scale(scls::Fraction(1, 4));
+        name_input.get()->set_y_in_object_scale(scls::Fraction(1, 2));
+        new_element.name_input = name_input;
+        // Create the final title object
+        current_title = *current_object.get()->new_object<scls::GUI_Text>(object_name + "_title_final");
+        current_title.get()->set_height_in_pixel(28);
+        current_title.get()->set_width_in_scale(scls::Fraction(1, 10));
+        current_title.get()->set_x_in_object_scale(scls::Fraction(3, 4));
+        current_title.get()->set_y_in_object_scale(scls::Fraction(1, 2));
+        current_title.get()->set_text("est de");
+        new_element.title_final = current_title;
+        // Create the final input object
+        std::shared_ptr<scls::GUI_Text_Input> final_input = *current_object.get()->new_object<scls::GUI_Text_Input>(object_name + "_input_final");
+        final_input.get()->set_border_width_in_pixel(1);
+        final_input.get()->set_height_in_pixel(26);
+        final_input.get()->set_width_in_scale(scls::Fraction(1, 5));
+        final_input.get()->set_x_in_object_scale(scls::Fraction(9, 10));
+        final_input.get()->set_y_in_object_scale(scls::Fraction(1, 2));
+        new_element.final_input = final_input;
+
+        // Add the element
+        new_element.type = type;
+        a_probabilities_universe_elements.push_back(new_element);
+        return a_probabilities_universe_elements[a_probabilities_universe_elements.size() - 1];
+    }
+    // Add a simple element in the elements
+    void Algebric_Solver_Page::add_probabilities_universe_element() {
+        Algebric_Solver_Page::__Probability_Universe_Element& new_element = __add_universe_element(PLEOS_ALGEBRIC_SOLVER_PROBABILITY_ELEMENT);
+        place_probabilities_universe_elements();
+    }
+    // Add a conditionnal element in the elements
+    void Algebric_Solver_Page::add_probabilities_universe_element_conditionnal() {
+        Algebric_Solver_Page::__Probability_Universe_Element& new_element = __add_universe_element(PLEOS_ALGEBRIC_SOLVER_PROBABILITY_ELEMENT_CONDITIONNAL);
+
+        // Create the title 2
+        std::string object_name = new_element.parent.get()->name();
+        std::shared_ptr<scls::GUI_Text> current_title = *new_element.parent.get()->new_object<scls::GUI_Text>(object_name + "_title_2");
+        current_title.get()->set_height_in_pixel(28);
+        current_title.get()->set_width_in_scale(scls::Fraction(1, 5));
+        current_title.get()->set_x_in_object_scale(scls::Fraction(2, 5));
+        current_title.get()->set_y_in_object_scale(scls::Fraction(1, 2));
+        current_title.get()->set_text("sachant");
+        new_element.title_2 = current_title;
+        // Create the condition input
+        std::shared_ptr<scls::GUI_Text_Input> condition_input = *new_element.parent.get()->new_object<scls::GUI_Text_Input>(object_name + "_condition_input");
+        condition_input.get()->set_border_width_in_pixel(1);
+        condition_input.get()->set_height_in_pixel(26);
+        condition_input.get()->set_width_in_scale(scls::Fraction(1, 10));
+        condition_input.get()->set_x_in_object_scale(scls::Fraction(11, 20));
+        condition_input.get()->set_y_in_object_scale(scls::Fraction(1, 2));
+        new_element.condition_input = condition_input;
+
+        place_probabilities_universe_elements();
+    }
+
+    //******************
+    //
     // Sequences handling
     //
     //******************
@@ -334,8 +435,7 @@ namespace pleos {
                     }
                 }
                 // Apply the redaction
-                a_functions_redaction.get()->set_text(final_text);
-                a_functions_redaction.get()->set_height_in_pixel(a_functions_redaction.get()->texture()->get_image()->height());
+                set_redaction(a_functions_redaction, final_text);
             }
         }
 
@@ -355,6 +455,38 @@ namespace pleos {
         if(a_number_theory_button.get() != 0 && a_number_theory_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) display_number_theory_page();
         if(a_probabilities_button.get() != 0 && a_probabilities_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) display_probabilities_page();
         if(a_sequences_button.get() != 0 && a_sequences_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) display_sequences_page();
+    }
+
+    // Check the probabilities event
+    void Algebric_Solver_Page::check_probabilities_events() {
+        // Create a tree
+        if(a_probabilities_tree_create.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) {
+            // Create the needed universe
+            Probability_Universe universe;
+            for(int i = 0;i<static_cast<int>(a_probabilities_universe_elements.size());i++) {
+                Algebric_Solver_Page::__Probability_Universe_Element& element = a_probabilities_universe_elements[i];
+                if(element.type == PLEOS_ALGEBRIC_SOLVER_PROBABILITY_ELEMENT) {
+                    // Create a new direct element
+                    universe.add_event(element.name_input.get()->text(), scls::Fraction::from_std_string(element.final_input.get()->text()));
+                } else if(element.type == PLEOS_ALGEBRIC_SOLVER_PROBABILITY_ELEMENT_CONDITIONNAL) {
+                    // Create a new element, conditionally to another
+                    universe.add_event_conditionally(element.name_input.get()->text(), scls::Fraction::from_std_string(element.final_input.get()->text()), element.condition_input.get()->text());
+                }
+            }
+
+            // Create the redaction
+            std::string final_text = universe.description();
+            // Apply the redaction
+            set_redaction(a_probabilities_redaction, final_text);
+            universe.tree().get()->save_png("tests/tree.png");
+        }
+
+        // Check the universe
+        if(a_probabilities_universe_add_element.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) {
+            add_probabilities_universe_element();
+        } if(a_probabilities_universe_add_element_conditionnal.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) {
+            add_probabilities_universe_element_conditionnal();
+        }
     }
 
     // Check the sequences event
@@ -397,6 +529,8 @@ namespace pleos {
         if(current_page() == PLEOS_ALGEBRIC_SOLVER_COMPLEX_NUMBER_PAGE) check_complex_number_events();
         // Function events
         if(current_page() == PLEOS_ALGEBRIC_SOLVER_FUNCTION_PAGE) check_functions_events();
+        // Probabilities events
+        if(current_page() == PLEOS_ALGEBRIC_SOLVER_PROBABILITIES_PAGE) check_probabilities_events();
         // Sequences events
         if(current_page() == PLEOS_ALGEBRIC_SOLVER_SEQUENCES_PAGE) check_sequences_events();
     }
@@ -449,6 +583,7 @@ namespace pleos {
         if(a_probabilities_page.get() != 0) a_probabilities_page.get()->set_visible(true);
 
         // Set the needed datas
+        unload_probabilities_universe();
         set_current_page(PLEOS_ALGEBRIC_SOLVER_PROBABILITIES_PAGE);
     }
 

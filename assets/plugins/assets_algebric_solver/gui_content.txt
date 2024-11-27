@@ -348,6 +348,76 @@
 	<x value=0 type=scale>
 	<y attach=top>
 </gui_object>
+<gui_object name="algebric_solver_probabilities_redaction" type="text">
+	<border bottom=1 left=1 right=1 top=1>
+	<content font_size=24>Pas de rédaction à afficher.</content>
+	<height value=24 type=pixel>
+	<parent name="algebric_solver_probabilities_body">
+	<texture alignment=fit>
+	<width value=4/5 type=scale>
+	<x value=1/2 type=object_scale>
+	<y attach=bottom attached_object="algebric_solver_probabilities_title" offset=5>
+</gui_object>
+<gui_object name="algebric_solver_probabilities_universe_title" type="text">
+	<content font_size=40>Créer un univers</content>
+	<height value=40 type=pixel>
+	<parent name="algebric_solver_probabilities_body">
+	<texture alignment=fit>
+	<width value=1/2 type=scale>
+	<x value=1/2 type=object_scale>
+	<y attach=bottom attached_object="algebric_solver_probabilities_redaction" offset=15>
+</gui_object>
+<gui_object name="algebric_solver_probabilities_universe">
+	<border bottom=1 left=1 right=1 top=1>
+	<height value=2/5>
+	<parent name="algebric_solver_probabilities_body">
+	<texture alignment=fit>
+	<width value=3/4 type=scale>
+	<x value=1/2 type=object_scale>
+	<y attach=bottom attached_object="algebric_solver_probabilities_universe_title" offset=5>
+</gui_object>
+<gui_object name="algebric_solver_probabilities_universe_add_element" type="text">
+	<border bottom=1 left=1 right=1 top=1>
+	<content font_size=30>Nouvelle possibilité</content>
+	<height value=30 type=pixel>
+	<parent name="algebric_solver_probabilities_body">
+	<texture alignment=fit>
+	<width value=1/5 type=scale>
+	<x value=1/4 type=object_scale>
+	<y attach=bottom attached_object="algebric_solver_probabilities_universe" offset=15>
+
+	<when event="overflighted">
+		<cursor type=pointing_hand_cursor>
+	</when>
+</gui_object>
+<gui_object name="algebric_solver_probabilities_universe_add_element_conditionnal" type="text">
+	<border bottom=1 left=1 right=1 top=1>
+	<content font_size=30>Nouvelle possibilité conditionelle</content>
+	<height value=30 type=pixel>
+	<parent name="algebric_solver_probabilities_body">
+	<texture alignment=fit>
+	<width value=1/5 type=scale>
+	<x value=1/2 type=object_scale>
+	<y attach=bottom attached_object="algebric_solver_probabilities_universe" offset=15>
+
+	<when event="overflighted">
+		<cursor type=pointing_hand_cursor>
+	</when>
+</gui_object>
+<gui_object name="algebric_solver_probabilities_tree_create" type="text">
+	<border bottom=1 left=1 right=1 top=1>
+	<content font_size=30>Créer un arbre pondéré</content>
+	<height value=30 type=pixel>
+	<parent name="algebric_solver_probabilities_body">
+	<texture alignment=fit>
+	<width value=1/4 type=scale>
+	<x value=1/2 type=object_scale>
+	<y attach=bottom attached_object="algebric_solver_probabilities_universe_add_element" offset=15>
+
+	<when event="overflighted">
+		<cursor type=pointing_hand_cursor>
+	</when>
+</gui_object>
 
 //***************************************************
 //
@@ -409,7 +479,7 @@
 	<y attach=bottom attached_object="algebric_solver_sequences_analyse_title">
 </gui_object>
 <gui_object name="algebric_solver_sequences_analyse_recursions">
-	<height value0 type=pixel>
+	<height value=0 type=pixel>
 	<parent name="algebric_solver_sequences_body">
 	<texture alignment=fit>
 	<width value=3/4 type=scale>

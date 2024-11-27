@@ -67,6 +67,29 @@ namespace pleos {
             std::shared_ptr<scls::GUI_Text> title;
         };
 
+        // Probability universe element
+        struct __Probability_Universe_Element {
+
+            #ifndef PLEOS_ALGEBRIC_SOLVER_PROBABILITY_ELEMENT
+            #define PLEOS_ALGEBRIC_SOLVER_PROBABILITY_ELEMENT 0
+            #endif // PLEOS_ALGEBRIC_SOLVER_PROBABILITY_ELEMENT
+            #ifndef PLEOS_ALGEBRIC_SOLVER_PROBABILITY_ELEMENT_CONDITIONNAL
+            #define PLEOS_ALGEBRIC_SOLVER_PROBABILITY_ELEMENT_CONDITIONNAL 1
+            #endif // PLEOS_ALGEBRIC_SOLVER_PROBABILITY_ELEMENT_CONDITIONNAL
+
+            // Type of element
+            unsigned char type = PLEOS_ALGEBRIC_SOLVER_PROBABILITY_ELEMENT;
+
+            // GUI part of an element for a function analyse
+            std::shared_ptr<scls::GUI_Text_Input> condition_input;
+            std::shared_ptr<scls::GUI_Text_Input> final_input;
+            std::shared_ptr<scls::GUI_Text_Input> name_input;
+            std::shared_ptr<scls::GUI_Object> parent;
+            std::shared_ptr<scls::GUI_Text> title_1;
+            std::shared_ptr<scls::GUI_Text> title_2;
+            std::shared_ptr<scls::GUI_Text> title_final;
+        };
+
         // Algebric_Solver_Page constructor
         Algebric_Solver_Page(scls::_Window_Advanced_Struct* window_struct, std::string name);
         // Loads an object in a page from XML
@@ -117,6 +140,30 @@ namespace pleos {
 
         //******************
         //
+        // Probabilities handling
+        //
+        //******************
+
+        // Add the base of a simple element in the universe
+        __Probability_Universe_Element& __add_universe_element(unsigned char type);
+        // Add a simple element in the universe
+        void add_probabilities_universe_element();
+        // Add a conditionnal element in the elements
+        void add_probabilities_universe_element_conditionnal();
+        // Place the elements in the functions analyse scroller
+        inline void place_probabilities_universe_elements() {
+            if(a_probabilities_universe_elements.size()>0) {
+                a_probabilities_universe_elements[a_probabilities_universe_elements.size()-1].parent.get()->attach_bottom_in_parent();
+            } for(int i = 1;i<static_cast<int>(a_probabilities_universe_elements.size());i++) {
+                int current_i = a_probabilities_universe_elements.size()-(i+1);
+                a_probabilities_universe_elements[current_i].parent.get()->attach_top_of_object_in_parent(a_probabilities_universe_elements[current_i + 1].parent.get());
+            } a_probabilities_universe.get()->check_scroller();
+        };
+        // Unloads the probabilities univer
+        inline void unload_probabilities_universe(){a_probabilities_universe.get()->reset();a_probabilities_universe_elements.clear();};
+
+        //******************
+        //
         // Sequences handling
         //
         //******************
@@ -145,6 +192,8 @@ namespace pleos {
         void check_functions_events();
         // Check the navigation event
         void check_navigation_events();
+        // Check the probabilities event
+        void check_probabilities_events();
         // Check the sequences event
         void check_sequences_events();
         // Update the events
@@ -189,6 +238,9 @@ namespace pleos {
         //
         //******************
 
+        // Set the redaction of a specific part
+        inline void set_redaction(std::shared_ptr<scls::GUI_Text> redaction, std::string content) {redaction.get()->set_text(content);redaction.get()->set_height_in_pixel(redaction.get()->texture()->get_image()->height());};
+
         // Navigation button
         std::shared_ptr<scls::GUI_Text> a_complex_number_navigation_button;
         std::shared_ptr<scls::GUI_Text> a_function_navigation_button;
@@ -220,6 +272,16 @@ namespace pleos {
         std::vector<__Function_Analyse_Element> a_functions_analyse_elements_content;
         std::shared_ptr<scls::GUI_Text> a_functions_analyse_elements_limit_button;
         std::shared_ptr<scls::GUI_Text> a_functions_analyse_elements_value_button;
+
+        // Probabilities page
+        std::shared_ptr<scls::GUI_Text> a_probabilities_redaction;
+        // Tree handling
+        std::shared_ptr<scls::GUI_Text> a_probabilities_tree_create;
+        // Universe creation part
+        std::shared_ptr<scls::GUI_Scroller> a_probabilities_universe;
+        std::vector<__Probability_Universe_Element> a_probabilities_universe_elements;
+        std::shared_ptr<scls::GUI_Text> a_probabilities_universe_add_element;
+        std::shared_ptr<scls::GUI_Text> a_probabilities_universe_add_element_conditionnal;
 
         // Sequences page
         std::shared_ptr<scls::GUI_Text> a_sequences_redaction;
