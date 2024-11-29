@@ -50,6 +50,8 @@ namespace pleos {
         if(to_return.get() != 0) return to_return;
         to_return = __create_loaded_object_from_type_home(object_name, object_type, parent);
         if(to_return.get() != 0) return to_return;
+        to_return = __create_loaded_object_from_type_matrices(object_name, object_type, parent);
+        if(to_return.get() != 0) return to_return;
         to_return = __create_loaded_object_from_type_number_theory(object_name, object_type, parent);
         if(to_return.get() != 0) return to_return;
         to_return = __create_loaded_object_from_type_probabilities(object_name, object_type, parent);
@@ -110,6 +112,12 @@ namespace pleos {
             return a_home_page;
         } return std::shared_ptr<scls::GUI_Object>();
     }
+    std::shared_ptr<scls::GUI_Object> Algebric_Solver_Page::__create_loaded_object_from_type_matrices(std::string object_name, std::string object_type, scls::GUI_Object* parent) {
+        if(object_name == "algebric_solver_matrices_body") {
+            a_matrices_page = *parent->new_object<scls::GUI_Object>(object_name);
+            return a_matrices_page;
+        } return std::shared_ptr<scls::GUI_Object>();
+    }
     std::shared_ptr<scls::GUI_Object> Algebric_Solver_Page::__create_loaded_object_from_type_navigation(std::string object_name, std::string object_type, scls::GUI_Object* parent) {
         if(object_name == "algebric_solver_navigation_complex_number_button") {
             a_complex_number_navigation_button = *parent->new_object<scls::GUI_Text>(object_name);
@@ -120,6 +128,9 @@ namespace pleos {
         } else if(object_name == "algebric_solver_navigation_function_button") {
             a_function_navigation_button = *parent->new_object<scls::GUI_Text>(object_name);
             return a_function_navigation_button;
+        } else if(object_name == "algebric_solver_navigation_matrices_button") {
+            a_matrices_button = *parent->new_object<scls::GUI_Text>(object_name);
+            return a_matrices_button;
         } else if(object_name == "algebric_solver_navigation_number_theory_button") {
             a_number_theory_button = *parent->new_object<scls::GUI_Text>(object_name);
             return a_number_theory_button;
@@ -447,11 +458,17 @@ namespace pleos {
         }
     }
 
+    // Check the matrices event
+    void Algebric_Solver_Page::check_matrices_events() {
+
+    }
+
     // Check the navigation event
     void Algebric_Solver_Page::check_navigation_events() {
         if(a_complex_number_navigation_button.get() != 0 && a_complex_number_navigation_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) display_complex_number_page();
         if(a_function_navigation_button.get() != 0 && a_function_navigation_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) display_function_page();
         if(a_home_navigation_button.get() != 0 && a_home_navigation_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) display_home_page();
+        if(a_matrices_button.get() != 0 && a_matrices_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) display_matrices_page();
         if(a_number_theory_button.get() != 0 && a_number_theory_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) display_number_theory_page();
         if(a_probabilities_button.get() != 0 && a_probabilities_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) display_probabilities_page();
         if(a_sequences_button.get() != 0 && a_sequences_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) display_sequences_page();
@@ -529,6 +546,8 @@ namespace pleos {
         if(current_page() == PLEOS_ALGEBRIC_SOLVER_COMPLEX_NUMBER_PAGE) check_complex_number_events();
         // Function events
         if(current_page() == PLEOS_ALGEBRIC_SOLVER_FUNCTION_PAGE) check_functions_events();
+        // Matrices events
+        if(current_page() == PLEOS_ALGEBRIC_SOLVER_MATRICES_PAGE) check_matrices_events();
         // Probabilities events
         if(current_page() == PLEOS_ALGEBRIC_SOLVER_PROBABILITIES_PAGE) check_probabilities_events();
         // Sequences events
@@ -569,6 +588,15 @@ namespace pleos {
     }
 
     // Displays the number theory page
+    void Algebric_Solver_Page::display_matrices_page() {
+        hide_all();
+        if(a_matrices_page.get() != 0) a_matrices_page.get()->set_visible(true);
+
+        // Set the needed datas
+        set_current_page(PLEOS_ALGEBRIC_SOLVER_MATRICES_PAGE);
+    }
+
+    // Displays the number theory page
     void Algebric_Solver_Page::display_number_theory_page() {
         hide_all();
         if(a_number_theory_page.get() != 0) a_number_theory_page.get()->set_visible(true);
@@ -603,6 +631,7 @@ namespace pleos {
         if(a_complex_number_page.get() != 0) a_complex_number_page.get()->set_visible(false);
         if(a_functions_page.get() != 0) a_functions_page.get()->set_visible(false);
         if(a_home_page.get() != 0) a_home_page.get()->set_visible(false);
+        if(a_matrices_page.get() != 0) a_matrices_page.get()->set_visible(false);
         if(a_number_theory_page.get() != 0) a_number_theory_page.get()->set_visible(false);
         if(a_probabilities_page.get() != 0) a_probabilities_page.get()->set_visible(false);
         if(a_sequences_page.get() != 0) a_sequences_page.get()->set_visible(false);

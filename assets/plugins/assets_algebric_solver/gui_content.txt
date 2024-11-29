@@ -47,13 +47,25 @@
 		<cursor type=pointing_hand_cursor>
 	</when>
 </gui_object>
+<gui_object name="algebric_solver_navigation_matrices_button" type="text">
+	<content font_size=40>Matrices</content>
+	<height value=40 type=pixel>
+	<parent name="algebric_solver_navigation">
+	<texture alignment=fit>
+	<width value=1 type=scale>
+	<y attach=bottom attached_object="algebric_solver_navigation_function_button">
+
+	<when event="overflighted">
+		<cursor type=pointing_hand_cursor>
+	</when>
+</gui_object>
 <gui_object name="algebric_solver_navigation_number_theory_button" type="text">
 	<content font_size=40>Théorie des nombres</content>
 	<height value=40 type=pixel>
 	<parent name="algebric_solver_navigation">
 	<texture alignment=fit>
 	<width value=1 type=scale>
-	<y attach=bottom attached_object="algebric_solver_navigation_function_button">
+	<y attach=bottom attached_object="algebric_solver_navigation_matrices_button">
 
 	<when event="overflighted">
 		<cursor type=pointing_hand_cursor>
@@ -301,6 +313,29 @@
 	<width value=3/4 type=scale>
 	<x value=1/2 type=object_scale>
 	<y attach=bottom attached_object="algebric_solver_functions_analyse_elements_value" offset=5>
+</gui_object>
+
+//***************************************************
+//
+//   MATRICES
+//
+//***************************************************
+
+<gui_object name="algebric_solver_matrices_body" type="scroller">
+	<border bottom=1 left=1 right=1 top=1>
+	<height value=1 type=scale>
+	<width value=4/5 type=scale>
+	<x attach=right>
+	<y value=0 type=scale>
+</gui_object>
+<gui_object name="algebric_solver_matrices_title" type="text">
+	<content font_size=80>Les matrices</content>
+	<height value=80 type=pixel>
+	<parent name="algebric_solver_matrices_body">
+	<texture alignment=fit>
+	<width value=1 type=scale>
+	<x value=0 type=scale>
+	<y attach=top>
 </gui_object>
 
 //***************************************************

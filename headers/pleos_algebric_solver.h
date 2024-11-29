@@ -40,6 +40,7 @@
 #define PLEOS_ALGEBRIC_SOLVER_FUNCTION_PAGE 3
 #define PLEOS_ALGEBRIC_SOLVER_SEQUENCES_PAGE 4
 #define PLEOS_ALGEBRIC_SOLVER_PROBABILITIES_PAGE 5
+#define PLEOS_ALGEBRIC_SOLVER_MATRICES_PAGE 6
 
 // The namespace "pleos" is used to simplify the all.
 namespace pleos {
@@ -97,6 +98,7 @@ namespace pleos {
         std::shared_ptr<scls::GUI_Object> __create_loaded_object_from_type_complex_number(std::string object_name, std::string object_type, scls::GUI_Object* parent);
         std::shared_ptr<scls::GUI_Object> __create_loaded_object_from_type_functions(std::string object_name, std::string object_type, scls::GUI_Object* parent);
         std::shared_ptr<scls::GUI_Object> __create_loaded_object_from_type_home(std::string object_name, std::string object_type, scls::GUI_Object* parent);
+        std::shared_ptr<scls::GUI_Object> __create_loaded_object_from_type_matrices(std::string object_name, std::string object_type, scls::GUI_Object* parent);
         std::shared_ptr<scls::GUI_Object> __create_loaded_object_from_type_navigation(std::string object_name, std::string object_type, scls::GUI_Object* parent);
         std::shared_ptr<scls::GUI_Object> __create_loaded_object_from_type_number_theory(std::string object_name, std::string object_type, scls::GUI_Object* parent);
         std::shared_ptr<scls::GUI_Object> __create_loaded_object_from_type_probabilities(std::string object_name, std::string object_type, scls::GUI_Object* parent);
@@ -186,15 +188,17 @@ namespace pleos {
         //
         //******************
 
-        // Check the complex number event
+        // Check the complex number events
         void check_complex_number_events();
-        // Check the functions event
+        // Check the functions events
         void check_functions_events();
-        // Check the navigation event
+        // Check the matrices events
+        void check_matrices_events();
+        // Check the navigation events
         void check_navigation_events();
-        // Check the probabilities event
+        // Check the probabilities events
         void check_probabilities_events();
-        // Check the sequences event
+        // Check the sequences events
         void check_sequences_events();
         // Update the events
         void update_event();
@@ -211,6 +215,8 @@ namespace pleos {
         void display_function_page();
         // Displays the home page
         void display_home_page();
+        // Displays the matrices page
+        void display_matrices_page();
         // Displays the number theory page
         void display_number_theory_page();
         // Displays the probabilities page
@@ -245,6 +251,7 @@ namespace pleos {
         std::shared_ptr<scls::GUI_Text> a_complex_number_navigation_button;
         std::shared_ptr<scls::GUI_Text> a_function_navigation_button;
         std::shared_ptr<scls::GUI_Text> a_home_navigation_button;
+        std::shared_ptr<scls::GUI_Text> a_matrices_button;
         std::shared_ptr<scls::GUI_Text> a_number_theory_button;
         std::shared_ptr<scls::GUI_Text> a_probabilities_button;
         std::shared_ptr<scls::GUI_Text> a_sequences_button;
@@ -253,6 +260,7 @@ namespace pleos {
         std::shared_ptr<scls::GUI_Object> a_complex_number_page;
         std::shared_ptr<scls::GUI_Object> a_functions_page;
         std::shared_ptr<scls::GUI_Object> a_home_page;
+        std::shared_ptr<scls::GUI_Object> a_matrices_page;
         std::shared_ptr<scls::GUI_Object> a_number_theory_page;
         std::shared_ptr<scls::GUI_Object> a_probabilities_page;
         std::shared_ptr<scls::GUI_Object> a_sequences_page;
