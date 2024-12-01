@@ -492,10 +492,10 @@ namespace pleos {
             }
 
             // Create the redaction
-            std::string final_text = universe.description();
+            std::string final_text = universe.description() + "</br></br>";
             // Apply the redaction
+            universe.tree(final_text).get()->save_png("tests/tree.png");
             set_redaction(a_probabilities_redaction, final_text);
-            universe.tree().get()->save_png("tests/tree.png");
         }
 
         // Check the universe
