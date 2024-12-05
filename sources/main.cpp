@@ -37,8 +37,6 @@ int main(int argc, char* argv[]) {
     pleos::__Temp_Pleos_Window window(900, 600, argv[0]);
     window.load_from_xml("assets/window.txt");
 
-    pleos::division_circle().get()->save_png("tests/division.png");
-
     while(window.run()) {
         window.update_event();
         window.update();

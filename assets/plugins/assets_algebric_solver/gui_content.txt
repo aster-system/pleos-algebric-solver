@@ -337,6 +337,29 @@
 	<x value=0 type=scale>
 	<y attach=top>
 </gui_object>
+<gui_object name="algebric_solver_matrices" type="scroller">
+	<border bottom=1 left=1 right=1 top=1>
+	<height value=1/2 type=scale>
+	<parent name="algebric_solver_matrices_body">
+	<texture alignment=fit>
+	<width value=4/5 type=scale>
+	<x value=1/2 type=object_scale>
+	<y attach=bottom attached_object="algebric_solver_matrices_title" offset=5>
+</gui_object>
+<gui_object name="algebric_solver_matrices_add" type="text">
+	<border bottom=1 left=1 right=1 top=1>
+	<content font_size=40>Ajouter une matrice</content>
+	<height value=40 type=pixel>
+	<parent name="algebric_solver_matrices_body">
+	<texture alignment=fit>
+	<width value=1/5 type=scale>
+	<x value=1/2 type=object_scale>
+	<y attach=bottom attached_object="algebric_solver_matrices" offset=5>
+
+	<when event="overflighted">
+		<cursor type=pointing_hand_cursor>
+	</when>
+</gui_object>
 
 //***************************************************
 //

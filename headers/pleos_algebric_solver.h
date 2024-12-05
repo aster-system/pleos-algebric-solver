@@ -142,6 +142,26 @@ namespace pleos {
 
         //******************
         //
+        // Matrices handling
+        //
+        //******************
+
+        // Adds a matrice
+        void add_matrice();
+        // Places the matrice elements
+        inline void place_matrices_elements() {
+            if(a_matrices_elements.size()>0) {
+                a_matrices_elements[a_matrices_elements.size() - 1].get()->attach_bottom_in_parent();
+            } for(int i = 1;i<static_cast<int>(a_matrices_elements.size());i++) {
+                int current_i = (a_matrices_elements.size() - 1) - i;
+                a_matrices_elements[current_i].get()->attach_top_of_object_in_parent(a_matrices_elements[current_i + 1].get());
+            } a_matrices.get()->check_scroller();
+        };
+        // Unloads the matrices elements
+        inline void unload_matrices_elements(){a_matrices_elements.clear();a_matrices.get()->reset();};
+
+        //******************
+        //
         // Probabilities handling
         //
         //******************
@@ -280,6 +300,11 @@ namespace pleos {
         std::vector<__Function_Analyse_Element> a_functions_analyse_elements_content;
         std::shared_ptr<scls::GUI_Text> a_functions_analyse_elements_limit_button;
         std::shared_ptr<scls::GUI_Text> a_functions_analyse_elements_value_button;
+
+        // Matrices page
+        std::shared_ptr<scls::GUI_Scroller> a_matrices;
+        std::shared_ptr<scls::GUI_Text> a_matrices_add;
+        std::vector<std::shared_ptr<Matrice_GUI<scls::Fraction>>> a_matrices_elements;
 
         // Probabilities page
         std::shared_ptr<scls::GUI_Text> a_probabilities_redaction;

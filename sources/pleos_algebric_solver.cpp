@@ -116,6 +116,12 @@ namespace pleos {
         if(object_name == "algebric_solver_matrices_body") {
             a_matrices_page = *parent->new_object<scls::GUI_Object>(object_name);
             return a_matrices_page;
+        } else if(object_name == "algebric_solver_matrices") {
+            a_matrices = *parent->new_object<scls::GUI_Scroller>(object_name);
+            return a_matrices;
+        } else if(object_name == "algebric_solver_matrices_add") {
+            a_matrices_add = *parent->new_object<scls::GUI_Text>(object_name);
+            return a_matrices_add;
         } return std::shared_ptr<scls::GUI_Object>();
     }
     std::shared_ptr<scls::GUI_Object> Algebric_Solver_Page::__create_loaded_object_from_type_navigation(std::string object_name, std::string object_type, scls::GUI_Object* parent) {
@@ -266,6 +272,20 @@ namespace pleos {
 
         // Place the elements in the scroller
         place_functions_analyse_elements();
+    }
+
+    //******************
+    //
+    // Matrices handling
+    //
+    //******************
+
+    // Adds a matrice
+    void Algebric_Solver_Page::add_matrice() {
+        // Create the element
+        std::shared_ptr<Matrice_GUI<scls::Fraction>> matrice = *a_matrices.get()->new_object<Matrice_GUI<scls::Fraction>>(a_matrices.get()->name() + "-object_" + std::to_string(a_matrices_elements.size()));
+        a_matrices_elements.push_back(matrice);
+        place_matrices_elements();
     }
 
     //******************
@@ -460,7 +480,8 @@ namespace pleos {
 
     // Check the matrices event
     void Algebric_Solver_Page::check_matrices_events() {
-
+        // Add an element
+        if(a_matrices_add.get() != 0 && a_matrices_add.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)){add_matrice();}
     }
 
     // Check the navigation event
