@@ -221,7 +221,7 @@ namespace pleos {
         // Check the sequences events
         void check_sequences_events();
         // Update the events
-        void update_event();
+        virtual void update_event();
 
         //******************
         //
