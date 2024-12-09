@@ -34,6 +34,27 @@
 SCLS_INIT
 
 int main(int argc, char* argv[]) {
+    // Create mat 1
+    pleos::Matrice mat_1 = pleos::Matrice(3, 2);
+    mat_1.matrice_at(0)->set(0, -3);
+    mat_1.matrice_at(0)->set(1, 3);
+    mat_1.matrice_at(0)->set(2, -3);
+    mat_1.matrice_at(1)->set(0, 3);
+    mat_1.matrice_at(1)->set(1, -3);
+    mat_1.matrice_at(1)->set(2, 3);
+    // Create mat 2
+    pleos::Matrice mat_2 = pleos::Matrice(2, 3);
+    mat_2.matrice_at(0)->set(0, -7);
+    mat_2.matrice_at(1)->set(0, 5);
+    mat_2.matrice_at(2)->set(0, -1);
+    mat_2.matrice_at(0)->set(1, -7);
+    mat_2.matrice_at(1)->set(1, 5);
+    mat_2.matrice_at(2)->set(1, -1);
+    std::cout << "A " << mat_1.dimension().dimension_number() << " " << mat_2.dimension().dimension_number() << " " << mat_2.dimension().last_dimension() << std::endl;
+    mat_1 *= mat_2;
+    std::cout << mat_1.to_std_string() << " " << mat_2.dimension().dimension_number() << std::endl;
+
+    return 0;
     pleos::__Temp_Pleos_Window window(900, 600, argv[0]);
     window.load_from_xml("assets/window.txt");
 
