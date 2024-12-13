@@ -35,24 +35,31 @@ SCLS_INIT
 
 int main(int argc, char* argv[]) {
     // Create mat 1
-    pleos::Matrice mat_1 = pleos::Matrice(3, 2);
-    mat_1.matrice_at(0)->set(0, -3);
-    mat_1.matrice_at(0)->set(1, 3);
-    mat_1.matrice_at(0)->set(2, -3);
-    mat_1.matrice_at(1)->set(0, 3);
-    mat_1.matrice_at(1)->set(1, -3);
-    mat_1.matrice_at(1)->set(2, 3);
-    // Create mat 2
-    pleos::Matrice mat_2 = pleos::Matrice(2, 3);
-    mat_2.matrice_at(0)->set(0, -7);
-    mat_2.matrice_at(1)->set(0, 5);
-    mat_2.matrice_at(2)->set(0, -1);
-    mat_2.matrice_at(0)->set(1, -7);
-    mat_2.matrice_at(1)->set(1, 5);
-    mat_2.matrice_at(2)->set(1, -1);
-    std::cout << "A " << mat_1.dimension().dimension_number() << " " << mat_2.dimension().dimension_number() << " " << mat_2.dimension().last_dimension() << std::endl;
-    mat_1 *= mat_2;
-    std::cout << mat_1.to_std_string() << " " << mat_2.dimension().dimension_number() << std::endl;
+    pleos::Matrice mat_a = pleos::Matrice("P", 2, 2);
+    mat_a.matrice_at(0)->set(0, 1);
+    mat_a.matrice_at(0)->set(1, 3);
+    mat_a.matrice_at(1)->set(0, 0);
+    mat_a.matrice_at(1)->set(1, -1);
+    pleos::Matrice mat_m = pleos::Matrice("M", 2, 2);
+    mat_m.matrice_at(0)->set(0, 0.5);
+    mat_m.matrice_at(0)->set(1, 0.75);
+    mat_m.matrice_at(1)->set(0, 0);
+    mat_m.matrice_at(1)->set(1, 0.25);
+    pleos::Matrice mat_d = pleos::Matrice("D", 2, 2);
+    mat_d.matrice_at(0)->set(0, 0.5);
+    mat_d.matrice_at(0)->set(1, 0);
+    mat_d.matrice_at(1)->set(0, 0);
+    mat_d.matrice_at(1)->set(1, 0.25);
+    for(int i = 0;i<10;i++) {
+        pleos::Matrice mat_d_temp = mat_d;
+        pleos::Matrice mat_m_temp = mat_m;
+        for(int j = 0;j<i;j++) {
+            mat_d_temp *= mat_d;
+            mat_m_temp *= mat_m;
+        }
+        std::cout << "M^" << i + 1 << " = " << mat_m_temp.to_std_string() << std::endl;
+        std::cout << "P * D^" << i + 1 << " * P" << " = " << (mat_a * mat_d_temp * mat_a).to_std_string() << std::endl;
+    }
 
     return 0;
     pleos::__Temp_Pleos_Window window(900, 600, argv[0]);

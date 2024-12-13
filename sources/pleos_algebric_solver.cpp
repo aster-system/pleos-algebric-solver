@@ -114,7 +114,7 @@ namespace pleos {
     }
     std::shared_ptr<scls::GUI_Object> Algebric_Solver_Page::__create_loaded_object_from_type_matrices(std::string object_name, std::string object_type, scls::GUI_Object* parent) {
         if(object_name == "algebric_solver_matrices_body") {
-            a_matrices_page = *parent->new_object<scls::GUI_Object>(object_name);
+            a_matrices_page = *parent->new_object<scls::GUI_Scroller>(object_name);
             return a_matrices_page;
         } else if(object_name == "algebric_solver_matrices") {
             a_matrices = *parent->new_object<scls::GUI_Scroller>(object_name);
@@ -122,6 +122,12 @@ namespace pleos {
         } else if(object_name == "algebric_solver_matrices_add") {
             a_matrices_add = *parent->new_object<scls::GUI_Text>(object_name);
             return a_matrices_add;
+        } else if(object_name == "algebric_solver_matrices_calculus") {
+            a_matrices_calculus = *parent->new_object<scls::GUI_Text>(object_name);
+            return a_matrices_calculus;
+        } else if(object_name == "algebric_solver_matrices_calculus_input") {
+            a_matrices_calculus_input = *parent->new_object<scls::GUI_Text_Input>(object_name);
+            return a_matrices_calculus_input;
         } return std::shared_ptr<scls::GUI_Object>();
     }
     std::shared_ptr<scls::GUI_Object> Algebric_Solver_Page::__create_loaded_object_from_type_navigation(std::string object_name, std::string object_type, scls::GUI_Object* parent) {
@@ -281,9 +287,11 @@ namespace pleos {
     //******************
 
     // Adds a matrice
+    char* __possible_name = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     void Algebric_Solver_Page::add_matrice() {
         // Create the element
         std::shared_ptr<Matrice_GUI<scls::Fraction>> matrice = *a_matrices.get()->new_object<Matrice_GUI<scls::Fraction>>(a_matrices.get()->name() + "-object_" + std::to_string(a_matrices_elements.size()));
+        matrice.get()->set_name(__possible_name[a_matrices_elements.size()]);
         a_matrices_elements.push_back(matrice);
         place_matrices_elements();
     }

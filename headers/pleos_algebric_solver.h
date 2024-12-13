@@ -304,6 +304,8 @@ namespace pleos {
         // Matrices page
         std::shared_ptr<scls::GUI_Scroller> a_matrices;
         std::shared_ptr<scls::GUI_Text> a_matrices_add;
+        std::shared_ptr<scls::GUI_Text> a_matrices_calculus;
+        std::shared_ptr<scls::GUI_Text_Input> a_matrices_calculus_input;
         std::vector<std::shared_ptr<Matrice_GUI<scls::Fraction>>> a_matrices_elements;
 
         // Probabilities page

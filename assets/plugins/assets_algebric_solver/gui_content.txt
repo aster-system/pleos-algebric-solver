@@ -360,6 +360,39 @@
 		<cursor type=pointing_hand_cursor>
 	</when>
 </gui_object>
+<gui_object name="algebric_solver_matrices_calculus_title" type="text">
+	<content font_size=50>Calcul matriciel</content>
+	<height value=50 type=pixel>
+	<parent name="algebric_solver_matrices_body">
+	<texture alignment=fit>
+	<width value=1 type=scale>
+	<x value=0 type=scale>
+	<y attach=bottom attached_object=algebric_solver_matrices_add>
+</gui_object>
+<gui_object name="algebric_solver_matrices_calculus_input" type="text_input">
+	<border bottom=1 left=1 right=1 top=1>
+	<font_size value=30>
+	<height value=30 type=pixel>
+	<parent name="algebric_solver_matrices_body">
+	<texture alignment=fit>
+	<width value=4/5 type=scale>
+	<x value=1/2 type=object_scale>
+	<y attach=bottom attached_object=algebric_solver_matrices_calculus_title offset=15>
+</gui_object>
+<gui_object name="algebric_solver_matrices_calculus" type="text">
+	<border bottom=1 left=1 right=1 top=1>
+	<content font_size=40>Calculer</content>
+	<height value=40 type=pixel>
+	<parent name="algebric_solver_matrices_body">
+	<texture alignment=fit>
+	<width value=1/5 type=scale>
+	<x value=1/2 type=object_scale>
+	<y attach=bottom attached_object="algebric_solver_matrices_calculus_input" offset=5>
+
+	<when event="overflighted">
+		<cursor type=pointing_hand_cursor>
+	</when>
+</gui_object>
 
 //***************************************************
 //
