@@ -50,16 +50,14 @@ int main(int argc, char* argv[]) {
     mat_d.matrice_at(0)->set(1, 0);
     mat_d.matrice_at(1)->set(0, 0);
     mat_d.matrice_at(1)->set(1, 0.25);
-    for(int i = 0;i<10;i++) {
-        pleos::Matrice mat_d_temp = mat_d;
-        pleos::Matrice mat_m_temp = mat_m;
-        for(int j = 0;j<i;j++) {
-            mat_d_temp *= mat_d;
-            mat_m_temp *= mat_m;
-        }
-        std::cout << "M^" << i + 1 << " = " << mat_m_temp.to_std_string() << std::endl;
-        std::cout << "P * D^" << i + 1 << " * P" << " = " << (mat_a * mat_d_temp * mat_a).to_std_string() << std::endl;
-    }
+
+    scls::Formula f = scls::string_to_formula("P * M - D");
+    std::vector<pleos::Matrice<scls::Fraction>> matrices;
+    matrices.push_back(mat_a);
+    matrices.push_back(mat_m);
+    matrices.push_back(mat_d);
+    pleos::Matrice<scls::Fraction> mat = f.to_field<pleos::Matrice<scls::Fraction>>(matrices);
+    std::cout << "M^" << 5 << " = " << mat.to_std_string() << std::endl;
 
     return 0;
     pleos::__Temp_Pleos_Window window(900, 600, argv[0]);
