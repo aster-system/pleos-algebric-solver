@@ -296,6 +296,20 @@ namespace pleos {
         place_matrices_elements();
     }
 
+    // Calculates the matrices
+    void Algebric_Solver_Page::calculate_matrice() {
+        // Get the needed matrices
+        std::vector<pleos::Matrice<scls::Fraction>> matrices;
+        for(int i = 0;i<static_cast<int>(a_matrices_elements.size());i++) {
+            matrices.push_back(a_matrices_elements[i].get()->matrice());
+        }
+
+        // Do the calculation
+        scls::Formula f = scls::string_to_formula(a_matrices_calculus_input.get()->text());
+        pleos::Matrice<scls::Fraction> mat = f.to_field<pleos::Matrice<scls::Fraction>>(matrices);
+        std::cout << f.to_std_string() << " " << matrices[0].name() << " " << mat.to_std_string() << std::endl;
+    }
+
     //******************
     //
     // Probabilities handling
@@ -490,6 +504,8 @@ namespace pleos {
     void Algebric_Solver_Page::check_matrices_events() {
         // Add an element
         if(a_matrices_add.get() != 0 && a_matrices_add.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)){add_matrice();}
+        // Do the calculation
+        if(a_matrices_calculus.get() != 0 && a_matrices_calculus.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)){calculate_matrice();}
     }
 
     // Check the navigation event

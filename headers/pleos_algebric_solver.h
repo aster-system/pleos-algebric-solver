@@ -148,6 +148,8 @@ namespace pleos {
 
         // Adds a matrice
         void add_matrice();
+        // Calculates the matrices
+        void calculate_matrice();
         // Places the matrice elements
         inline void place_matrices_elements() {
             if(a_matrices_elements.size()>0) {

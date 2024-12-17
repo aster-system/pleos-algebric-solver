@@ -34,32 +34,6 @@
 SCLS_INIT
 
 int main(int argc, char* argv[]) {
-    // Create mat 1
-    pleos::Matrice mat_a = pleos::Matrice("P", 2, 2);
-    mat_a.matrice_at(0)->set(0, 1);
-    mat_a.matrice_at(0)->set(1, 3);
-    mat_a.matrice_at(1)->set(0, 0);
-    mat_a.matrice_at(1)->set(1, -1);
-    pleos::Matrice mat_m = pleos::Matrice("M", 2, 2);
-    mat_m.matrice_at(0)->set(0, 0.5);
-    mat_m.matrice_at(0)->set(1, 0.75);
-    mat_m.matrice_at(1)->set(0, 0);
-    mat_m.matrice_at(1)->set(1, 0.25);
-    pleos::Matrice mat_d = pleos::Matrice("D", 2, 2);
-    mat_d.matrice_at(0)->set(0, 0.5);
-    mat_d.matrice_at(0)->set(1, 0);
-    mat_d.matrice_at(1)->set(0, 0);
-    mat_d.matrice_at(1)->set(1, 0.25);
-
-    scls::Formula f = scls::string_to_formula("P * M - D");
-    std::vector<pleos::Matrice<scls::Fraction>> matrices;
-    matrices.push_back(mat_a);
-    matrices.push_back(mat_m);
-    matrices.push_back(mat_d);
-    pleos::Matrice<scls::Fraction> mat = f.to_field<pleos::Matrice<scls::Fraction>>(matrices);
-    std::cout << "M^" << 5 << " = " << mat.to_std_string() << std::endl;
-
-    return 0;
     pleos::__Temp_Pleos_Window window(900, 600, argv[0]);
     window.load_from_xml("assets/window.txt");
 
