@@ -58,6 +58,9 @@ namespace pleos {
             #ifndef PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_LIMIT
             #define PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_LIMIT 1
             #endif // PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_LIMIT
+            #ifndef PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_DERIVATION
+            #define PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_DERIVATION 2
+            #endif // PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_DERIVATION
 
             // Type of element
             unsigned char type = PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_IMAGE;
@@ -121,15 +124,19 @@ namespace pleos {
 
         // Returns the current text to analyse
         inline std::string functions_analyse_input() const {if(a_functions_analyse_input.get() == 0) return std::string(); return a_functions_analyse_input.get()->text();};
-        // Convert a string to a polymonial with functions datas
+        // Converts a string to a polymonial with functions datas
         scls::Formula functions_string_to_formula();
-        // Load an image finder in the elements
+        // Loads an image finder in the elements
         __Function_Analyse_Element& load_function_analyse_element(unsigned char type);
-        // Load an image finder in the elements
+        // Loads a derivation finder in the elements
+        void load_function_analyse_derivation_finder();
+        // Loads a derivation number finder in the elements
+        void load_function_analyse_derivation_number_finder();
+        // Loads an image finder in the elements
         void load_function_analyse_image_finder();
-        // Load a limit finder in the elements
+        // Loads a limit finder in the elements
         void load_function_analyse_limit_finder();
-        // Place the elements in the functions analyse scroller
+        // Places the elements in the functions analyse scroller
         inline void place_functions_analyse_elements() {
             if(a_functions_analyse_elements_content.size()>0) {
                 a_functions_analyse_elements_content[0].parent.get()->attach_bottom_in_parent();
@@ -161,6 +168,15 @@ namespace pleos {
         };
         // Unloads the matrices elements
         inline void unload_matrices_elements(){a_matrices_elements.clear();a_matrices.get()->reset();};
+
+        //******************
+        //
+        // Number theory
+        //
+        //******************
+
+        // Generate a congruence circle
+        void generate_congruence_circle();
 
         //******************
         //
@@ -218,6 +234,8 @@ namespace pleos {
         void check_matrices_events();
         // Check the navigation events
         void check_navigation_events();
+        // Check the number theory events
+        void check_number_theory_events();
         // Check the probabilities events
         void check_probabilities_events();
         // Check the sequences events
@@ -249,8 +267,12 @@ namespace pleos {
         void hide_all();
 
         // Returns / resets the current page
+        inline double current_number_theory_congruence_circle_modulo() const {return a_current_state.current_modulo;};
         inline unsigned short current_page() const {return a_current_state.current_page;};
+        inline double current_number_theory_congruence_circle_point_number() const {return a_current_state.current_point_number;};
+        inline void set_current_number_theory_congruence_circle_modulo(double new_current_number_theory_congruence_circle_modulo) {a_current_state.current_modulo = new_current_number_theory_congruence_circle_modulo;};
         inline void set_current_page(unsigned short new_page) {a_current_state.current_page = new_page;};
+        inline void set_current_number_theory_congruence_circle_point_number(double new_current_number_theory_congruence_circle_point_number) {a_current_state.current_point_number = new_current_number_theory_congruence_circle_point_number;};
 
     private:
 
@@ -258,6 +280,10 @@ namespace pleos {
         struct {
             // Current page
             unsigned short current_page = PLEOS_ALGEBRIC_SOLVER_HOME_PAGE;
+
+            // Datas about the congruence circle
+            double current_modulo = 2;
+            double current_point_number = 10;
         } a_current_state;
 
         //******************
@@ -300,6 +326,8 @@ namespace pleos {
         std::shared_ptr<scls::GUI_Text_Input> a_functions_analyse_input;
         std::shared_ptr<scls::GUI_Scroller> a_functions_analyse_elements;
         std::vector<__Function_Analyse_Element> a_functions_analyse_elements_content;
+        std::shared_ptr<scls::GUI_Text> a_functions_analyse_elements_derivation_button;
+        std::shared_ptr<scls::GUI_Text> a_functions_analyse_elements_derivation_number_button;
         std::shared_ptr<scls::GUI_Text> a_functions_analyse_elements_limit_button;
         std::shared_ptr<scls::GUI_Text> a_functions_analyse_elements_value_button;
 
@@ -309,6 +337,9 @@ namespace pleos {
         std::shared_ptr<scls::GUI_Text> a_matrices_calculus;
         std::shared_ptr<scls::GUI_Text_Input> a_matrices_calculus_input;
         std::vector<std::shared_ptr<Matrice_GUI<scls::Fraction>>> a_matrices_elements;
+
+        // Number theory
+        std::shared_ptr<scls::GUI_Object> a_number_theory_congruence_circle;
 
         // Probabilities page
         std::shared_ptr<scls::GUI_Text> a_probabilities_redaction;

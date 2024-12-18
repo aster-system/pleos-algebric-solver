@@ -88,6 +88,12 @@ namespace pleos {
         } else if(object_name == "algebric_solver_functions_analyse_elements") {
             a_functions_analyse_elements = *parent->new_object<scls::GUI_Scroller>(object_name);
             return a_functions_analyse_elements;
+        } else if(object_name == "algebric_solver_functions_analyse_elements_derivation") {
+            a_functions_analyse_elements_derivation_button = *parent->new_object<scls::GUI_Text>(object_name);
+            return a_functions_analyse_elements_derivation_button;
+        } else if(object_name == "algebric_solver_functions_analyse_elements_derivation_number") {
+            a_functions_analyse_elements_derivation_number_button = *parent->new_object<scls::GUI_Text>(object_name);
+            return a_functions_analyse_elements_derivation_number_button;
         } else if(object_name == "algebric_solver_functions_analyse_elements_value") {
             a_functions_analyse_elements_value_button = *parent->new_object<scls::GUI_Text>(object_name);
             return a_functions_analyse_elements_value_button;
@@ -158,6 +164,9 @@ namespace pleos {
         if(object_name == "algebric_solver_number_theory_body") {
             a_number_theory_page = *parent->new_object<scls::GUI_Object>(object_name);
             return a_number_theory_page;
+        } else if(object_name == "algebric_solver_number_theory_circle") {
+            a_number_theory_congruence_circle = *parent->new_object<scls::GUI_Object>(object_name);
+            return a_number_theory_congruence_circle;
         } return std::shared_ptr<scls::GUI_Object>();
     }
     std::shared_ptr<scls::GUI_Object> Algebric_Solver_Page::__create_loaded_object_from_type_probabilities(std::string object_name, std::string object_type, scls::GUI_Object* parent) {
@@ -237,6 +246,10 @@ namespace pleos {
             current_title.get()->set_text("Image de f pour x =");
         } else if(type == PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_LIMIT) {
             current_title.get()->set_text("Image de f pour x tendant vers");
+        } else if(type == PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_DERIVATION) {
+            current_title.get()->set_text("Fonction dérivée de f par rapport à x");
+            current_title.get()->set_x_in_object_scale(scls::Fraction(1, 2));
+            current_title.get()->set_width_in_scale(scls::Fraction(3, 4));
         }
         new_element.title = current_title;
 
@@ -245,6 +258,15 @@ namespace pleos {
         a_functions_analyse_elements_content.push_back(new_element);
         return a_functions_analyse_elements_content[a_functions_analyse_elements_content.size() - 1];
     }
+   // Loads a derivation finder in the elements
+    void Algebric_Solver_Page::load_function_analyse_derivation_finder() {
+        Algebric_Solver_Page::__Function_Analyse_Element& new_element = load_function_analyse_element(PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_DERIVATION);
+
+        // Place the elements in the scroller
+        place_functions_analyse_elements();
+    }
+    // Loads a derivation number finder in the elements
+    void Algebric_Solver_Page::load_function_analyse_derivation_number_finder() {}
     // Load an image finder in the elements
     void Algebric_Solver_Page::load_function_analyse_image_finder() {
         Algebric_Solver_Page::__Function_Analyse_Element& new_element = load_function_analyse_element(PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_IMAGE);
@@ -308,6 +330,17 @@ namespace pleos {
         scls::Formula f = scls::string_to_formula(a_matrices_calculus_input.get()->text());
         pleos::Matrice<scls::Fraction> mat = f.to_field<pleos::Matrice<scls::Fraction>>(matrices);
         std::cout << f.to_std_string() << " " << matrices[0].name() << " " << mat.to_std_string() << std::endl;
+    }
+
+    //******************
+    //
+    // Number theory
+    //
+    //******************
+
+    // Generate a congruence circle
+    void Algebric_Solver_Page::generate_congruence_circle() {
+        a_number_theory_congruence_circle.get()->set_texture(division_circle(500, 220, current_number_theory_congruence_circle_modulo(), current_number_theory_congruence_circle_point_number()));
     }
 
     //******************
@@ -485,6 +518,10 @@ namespace pleos {
                         else {needed_limit = scls::Fraction::from_std_string(needed_text);}
                         function_limit(fs, needed_limit, final_text);
                         final_text += "</br></br>";
+                    } else if(a_functions_analyse_elements_content[i].type == PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_DERIVATION) {
+                        // Get the derivation of the function
+                        scls::Formula derivation = function_derivation(fs, final_text);
+                        final_text += "</br></br>";
                     }
                 }
                 // Apply the redaction
@@ -493,7 +530,11 @@ namespace pleos {
         }
 
         // Check the elements
-        if(a_functions_analyse_elements_value_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) {
+        if(a_functions_analyse_elements_derivation_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) {
+            load_function_analyse_derivation_finder();
+        } if(a_functions_analyse_elements_derivation_number_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) {
+            load_function_analyse_derivation_number_finder();
+        } if(a_functions_analyse_elements_value_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) {
             load_function_analyse_image_finder();
         } if(a_functions_analyse_elements_limit_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) {
             load_function_analyse_limit_finder();
@@ -517,6 +558,23 @@ namespace pleos {
         if(a_number_theory_button.get() != 0 && a_number_theory_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) display_number_theory_page();
         if(a_probabilities_button.get() != 0 && a_probabilities_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) display_probabilities_page();
         if(a_sequences_button.get() != 0 && a_sequences_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) display_sequences_page();
+    }
+
+    // Check the number theory events
+    void Algebric_Solver_Page::check_number_theory_events() {
+        // Increase/decrease the modulo
+        if(window_struct()->key_pressed("a")) {set_current_number_theory_congruence_circle_modulo(current_number_theory_congruence_circle_modulo() + 0.1);generate_congruence_circle();}
+        if(window_struct()->key_pressed("z")) {set_current_number_theory_congruence_circle_modulo(current_number_theory_congruence_circle_modulo() + 0.5);generate_congruence_circle();}
+        if(window_struct()->key_pressed("q")) {set_current_number_theory_congruence_circle_modulo(current_number_theory_congruence_circle_modulo() - 0.1);generate_congruence_circle();}
+        if(window_struct()->key_pressed("s")) {set_current_number_theory_congruence_circle_modulo(current_number_theory_congruence_circle_modulo() - 0.5);generate_congruence_circle();}
+        // Increase/decrease the point number
+        if(window_struct()->key_pressed("o")) {set_current_number_theory_congruence_circle_point_number(current_number_theory_congruence_circle_point_number() + 0.1);generate_congruence_circle();}
+        if(window_struct()->key_pressed("p")) {set_current_number_theory_congruence_circle_point_number(current_number_theory_congruence_circle_point_number() + 0.5);generate_congruence_circle();}
+        if(window_struct()->key_pressed("l")) {set_current_number_theory_congruence_circle_point_number(current_number_theory_congruence_circle_point_number() - 0.1);generate_congruence_circle();}
+        if(window_struct()->key_pressed("m")) {set_current_number_theory_congruence_circle_point_number(current_number_theory_congruence_circle_point_number() - 0.5);generate_congruence_circle();}
+        // Reset values
+        if(window_struct()->key_pressed("w")) {set_current_number_theory_congruence_circle_modulo(2);generate_congruence_circle();}
+        if(window_struct()->key_pressed("x")) {set_current_number_theory_congruence_circle_point_number(10);generate_congruence_circle();}
     }
 
     // Check the probabilities event
@@ -595,6 +653,8 @@ namespace pleos {
         if(current_page() == PLEOS_ALGEBRIC_SOLVER_MATRICES_PAGE) check_matrices_events();
         // Probabilities events
         if(current_page() == PLEOS_ALGEBRIC_SOLVER_PROBABILITIES_PAGE) check_probabilities_events();
+        // Number theory events
+        if(current_page() == PLEOS_ALGEBRIC_SOLVER_NUMBER_THEORY_PAGE) check_number_theory_events();
         // Sequences events
         if(current_page() == PLEOS_ALGEBRIC_SOLVER_SEQUENCES_PAGE) check_sequences_events();
     }
@@ -648,6 +708,7 @@ namespace pleos {
 
         // Set the needed datas
         set_current_page(PLEOS_ALGEBRIC_SOLVER_NUMBER_THEORY_PAGE);
+        generate_congruence_circle();
     }
 
     // Displays the probability page
