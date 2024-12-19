@@ -88,6 +88,9 @@ namespace pleos {
         } else if(object_name == "algebric_solver_functions_analyse_elements") {
             a_functions_analyse_elements = *parent->new_object<scls::GUI_Scroller>(object_name);
             return a_functions_analyse_elements;
+        } else if(object_name == "algebric_solver_functions_analyse_elements_definition_set") {
+            a_functions_analyse_elements_definition_set_button = *parent->new_object<scls::GUI_Text>(object_name);
+            return a_functions_analyse_elements_definition_set_button;
         } else if(object_name == "algebric_solver_functions_analyse_elements_derivation") {
             a_functions_analyse_elements_derivation_button = *parent->new_object<scls::GUI_Text>(object_name);
             return a_functions_analyse_elements_derivation_button;
@@ -250,6 +253,10 @@ namespace pleos {
             current_title.get()->set_text("Fonction dérivée de f par rapport à x");
             current_title.get()->set_x_in_object_scale(scls::Fraction(1, 2));
             current_title.get()->set_width_in_scale(scls::Fraction(3, 4));
+        } else if(type == PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_DEFINITION_SET) {
+            current_title.get()->set_text("Ensemble de définition de f");
+            current_title.get()->set_x_in_object_scale(scls::Fraction(1, 2));
+            current_title.get()->set_width_in_scale(scls::Fraction(3, 4));
         }
         new_element.title = current_title;
 
@@ -258,7 +265,14 @@ namespace pleos {
         a_functions_analyse_elements_content.push_back(new_element);
         return a_functions_analyse_elements_content[a_functions_analyse_elements_content.size() - 1];
     }
-   // Loads a derivation finder in the elements
+    // Loads a definition set finder in the elements
+    void Algebric_Solver_Page::load_function_analyse_definition_set_finder() {
+        Algebric_Solver_Page::__Function_Analyse_Element& new_element = load_function_analyse_element(PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_DEFINITION_SET);
+
+        // Place the elements in the scroller
+        place_functions_analyse_elements();
+    }
+    // Loads a derivation finder in the elements
     void Algebric_Solver_Page::load_function_analyse_derivation_finder() {
         Algebric_Solver_Page::__Function_Analyse_Element& new_element = load_function_analyse_element(PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_DERIVATION);
 
@@ -522,6 +536,10 @@ namespace pleos {
                         // Get the derivation of the function
                         scls::Formula derivation = function_derivation(fs, final_text);
                         final_text += "</br></br>";
+                    } else if(a_functions_analyse_elements_content[i].type == PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_DEFINITION_SET) {
+                        // Get the definition set of the function
+                        scls::Set_Number definition_set = function_definition_set(fs, final_text);
+                        final_text += "</br></br>";
                     }
                 }
                 // Apply the redaction
@@ -530,7 +548,9 @@ namespace pleos {
         }
 
         // Check the elements
-        if(a_functions_analyse_elements_derivation_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) {
+        if(a_functions_analyse_elements_definition_set_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) {
+           load_function_analyse_definition_set_finder();
+        } if(a_functions_analyse_elements_derivation_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) {
             load_function_analyse_derivation_finder();
         } if(a_functions_analyse_elements_derivation_number_button.get()->is_clicked_during_this_frame(GLFW_MOUSE_BUTTON_LEFT)) {
             load_function_analyse_derivation_number_finder();

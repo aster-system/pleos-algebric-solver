@@ -61,6 +61,9 @@ namespace pleos {
             #ifndef PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_DERIVATION
             #define PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_DERIVATION 2
             #endif // PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_DERIVATION
+            #ifndef PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_DEFINITION_SET
+            #define PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_DEFINITION_SET 3
+            #endif // PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_DEFINITION_SET
 
             // Type of element
             unsigned char type = PLEOS_ALGEBRIC_SOLVER_FUNCTION_ELEMENT_IMAGE;
@@ -128,6 +131,8 @@ namespace pleos {
         scls::Formula functions_string_to_formula();
         // Loads an image finder in the elements
         __Function_Analyse_Element& load_function_analyse_element(unsigned char type);
+        // Loads a definition set finder in the elements
+        void load_function_analyse_definition_set_finder();
         // Loads a derivation finder in the elements
         void load_function_analyse_derivation_finder();
         // Loads a derivation number finder in the elements
@@ -326,6 +331,7 @@ namespace pleos {
         std::shared_ptr<scls::GUI_Text_Input> a_functions_analyse_input;
         std::shared_ptr<scls::GUI_Scroller> a_functions_analyse_elements;
         std::vector<__Function_Analyse_Element> a_functions_analyse_elements_content;
+        std::shared_ptr<scls::GUI_Text> a_functions_analyse_elements_definition_set_button;
         std::shared_ptr<scls::GUI_Text> a_functions_analyse_elements_derivation_button;
         std::shared_ptr<scls::GUI_Text> a_functions_analyse_elements_derivation_number_button;
         std::shared_ptr<scls::GUI_Text> a_functions_analyse_elements_limit_button;

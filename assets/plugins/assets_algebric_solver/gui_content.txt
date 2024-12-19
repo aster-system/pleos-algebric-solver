@@ -290,6 +290,20 @@
 		<cursor type=pointing_hand_cursor>
 	</when>
 </gui_object>
+<gui_object name="algebric_solver_functions_analyse_elements_definition_set" type="text">
+	<border bottom=1 left=1 right=1 top=1>
+	<content font_size=30>Ensemble de définition</content>
+	<height value=30 type=pixel>
+	<parent name="algebric_solver_functions_body">
+	<texture alignment=fit>
+	<width value=1/5 type=scale>
+	<x value=1/2 type=object_scale>
+	<y attach=bottom attached_object="algebric_solver_functions_analyse_elements_title" offset=5>
+
+	<when event="overflighted">
+		<cursor type=pointing_hand_cursor>
+	</when>
+</gui_object>
 <gui_object name="algebric_solver_functions_analyse_elements_limit" type="text">
 	<border bottom=1 left=1 right=1 top=1>
 	<content font_size=30>Limite de x</content>
@@ -297,7 +311,7 @@
 	<parent name="algebric_solver_functions_body">
 	<texture alignment=fit>
 	<width value=1/5 type=scale>
-	<x value=1/2 type=object_scale>
+	<x value=3/4 type=object_scale>
 	<y attach=bottom attached_object="algebric_solver_functions_analyse_elements_title" offset=5>
 
 	<when event="overflighted">
@@ -311,8 +325,8 @@
 	<parent name="algebric_solver_functions_body">
 	<texture alignment=fit>
 	<width value=1/5 type=scale>
-	<x value=3/4 type=object_scale>
-	<y attach=bottom attached_object="algebric_solver_functions_analyse_elements_title" offset=5>
+	<x value=1/4 type=object_scale>
+	<y attach=bottom attached_object="algebric_solver_functions_analyse_elements_value" offset=5>
 
 	<when event="overflighted">
 		<cursor type=pointing_hand_cursor>
@@ -325,7 +339,7 @@
 	<parent name="algebric_solver_functions_body">
 	<texture alignment=fit>
 	<width value=1/5 type=scale>
-	<x value=1/4 type=object_scale>
+	<x value=1/2 type=object_scale>
 	<y attach=bottom attached_object="algebric_solver_functions_analyse_elements_value" offset=5>
 
 	<when event="overflighted">
