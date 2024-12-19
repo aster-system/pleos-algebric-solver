@@ -583,10 +583,14 @@ namespace pleos {
     // Check the number theory events
     void Algebric_Solver_Page::check_number_theory_events() {
         // Increase/decrease the modulo
-        if(window_struct()->key_pressed("a")) {set_current_number_theory_congruence_circle_modulo(current_number_theory_congruence_circle_modulo() + 0.1);generate_congruence_circle();}
-        if(window_struct()->key_pressed("z")) {set_current_number_theory_congruence_circle_modulo(current_number_theory_congruence_circle_modulo() + 0.5);generate_congruence_circle();}
-        if(window_struct()->key_pressed("q")) {set_current_number_theory_congruence_circle_modulo(current_number_theory_congruence_circle_modulo() - 0.1);generate_congruence_circle();}
-        if(window_struct()->key_pressed("s")) {set_current_number_theory_congruence_circle_modulo(current_number_theory_congruence_circle_modulo() - 0.5);generate_congruence_circle();}
+        if(window_struct()->key_pressed("a")) {set_current_number_theory_congruence_circle_modulo(current_number_theory_congruence_circle_modulo() + 0.001);generate_congruence_circle();}
+        if(window_struct()->key_pressed("z")) {set_current_number_theory_congruence_circle_modulo(current_number_theory_congruence_circle_modulo() + 0.01);generate_congruence_circle();}
+        if(window_struct()->key_pressed("e")) {set_current_number_theory_congruence_circle_modulo(current_number_theory_congruence_circle_modulo() + 0.1);generate_congruence_circle();}
+        if(window_struct()->key_pressed("r")) {set_current_number_theory_congruence_circle_modulo(current_number_theory_congruence_circle_modulo() + 0.5);generate_congruence_circle();}
+        if(window_struct()->key_pressed("q")) {set_current_number_theory_congruence_circle_modulo(current_number_theory_congruence_circle_modulo() - 0.001);generate_congruence_circle();}
+        if(window_struct()->key_pressed("s")) {set_current_number_theory_congruence_circle_modulo(current_number_theory_congruence_circle_modulo() - 0.01);generate_congruence_circle();}
+        if(window_struct()->key_pressed("d")) {set_current_number_theory_congruence_circle_modulo(current_number_theory_congruence_circle_modulo() - 0.1);generate_congruence_circle();}
+        if(window_struct()->key_pressed("f")) {set_current_number_theory_congruence_circle_modulo(current_number_theory_congruence_circle_modulo() - 0.5);generate_congruence_circle();}
         // Increase/decrease the point number
         if(window_struct()->key_pressed("o")) {set_current_number_theory_congruence_circle_point_number(current_number_theory_congruence_circle_point_number() + 0.1);generate_congruence_circle();}
         if(window_struct()->key_pressed("p")) {set_current_number_theory_congruence_circle_point_number(current_number_theory_congruence_circle_point_number() + 0.5);generate_congruence_circle();}
@@ -595,6 +599,7 @@ namespace pleos {
         // Reset values
         if(window_struct()->key_pressed("w")) {set_current_number_theory_congruence_circle_modulo(2);generate_congruence_circle();}
         if(window_struct()->key_pressed("x")) {set_current_number_theory_congruence_circle_point_number(10);generate_congruence_circle();}
+        if(window_struct()->key_pressed("c")) {set_current_number_theory_congruence_circle_modulo(static_cast<int>(current_number_theory_congruence_circle_modulo()));generate_congruence_circle();}
     }
 
     // Check the probabilities event

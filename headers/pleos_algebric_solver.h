@@ -144,9 +144,9 @@ namespace pleos {
         // Places the elements in the functions analyse scroller
         inline void place_functions_analyse_elements() {
             if(a_functions_analyse_elements_content.size()>0) {
-                a_functions_analyse_elements_content[0].parent.get()->attach_bottom_in_parent();
+                a_functions_analyse_elements_content[a_functions_analyse_elements_content.size() - 1].parent.get()->attach_bottom_in_parent();
             } for(int i = 1;i<static_cast<int>(a_functions_analyse_elements_content.size());i++) {
-                a_functions_analyse_elements_content[i].parent.get()->attach_top_of_object_in_parent(a_functions_analyse_elements_content[i - 1].parent.get());
+                a_functions_analyse_elements_content[a_functions_analyse_elements_content.size() - (i + 1)].parent.get()->attach_top_of_object_in_parent(a_functions_analyse_elements_content[a_functions_analyse_elements_content.size() - (i)].parent.get());
             } a_functions_analyse_elements.get()->check_scroller();
         };
         // Unloads the functions analyse elements
